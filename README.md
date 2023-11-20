@@ -12,7 +12,7 @@ In co-op mode, the Minimap mod ensures that everyone can join in the excitement
 of venturing into the building, eliminating the need for one player to stay 
 back at the ship.
 
-<img alt="Minimap Mod Logo" src="images/minimap-logo-1.png" width="272" 
+<img alt="Minimap Mod Logo" src="Images/minimap-logo-1.png" width="272" 
 style="display: block; margin-left: auto; margin-right: auto;" />
 
 
@@ -33,7 +33,7 @@ affecting the Minimap or ship map of other players.
 This is a client-sided mod, meaning that other players don't need to have this 
 mod installed.
 
-<!-- ![Screenshot showcasing the Minimap](images/minimap-showcase.png) -->
+<!-- ![Screenshot showcasing the Minimap](Images/minimap-showcase.png) -->
 
 
 # Features
@@ -50,7 +50,7 @@ the hotkey to toggle minimap
 - All settings configurable via a user-friendly in-game GUI
 - All configurable settings saved across sessions
 
-![Minimap GUI](images/minimap-gui.png)
+![Minimap GUI](Images/minimap-gui.png)
 
 
 # Installation
