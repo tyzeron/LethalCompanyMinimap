@@ -18,7 +18,7 @@ namespace LethalCompanyMinimap
     {
         public const string modGUID = "LethalCompanyMinimap";
         public const string modName = "Minimap";
-        public const string modVersion = "1.0.0";
+        public const string modVersion = "1.0.1";
         public const string modAuthor = "Tyzeron";
 
         public static KeyboardShortcut defaultGuiKey = new KeyboardShortcut(KeyCode.F1);
@@ -54,6 +54,7 @@ namespace LethalCompanyMinimap
             harmony.PatchAll(typeof(StartofRoundPatch));
             harmony.PatchAll(typeof(ManualCameraRendererPatch));
             harmony.PatchAll(typeof(QuickMenuManagerPatch));
+            harmony.PatchAll(typeof(ShipTeleporterPatch));
 
             // Initialize Minimap Mod Menu GUI
             GameObject minimapGUIObject = new GameObject("MinimapGUI");

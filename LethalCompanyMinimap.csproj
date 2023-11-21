@@ -83,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MinimapGUI.cs" />
+    <Compile Include="Patches\ShipTeleporterPatch.cs" />
     <Compile Include="Patches\QuickMenuManagerPatch.cs" />
     <Compile Include="Patches\ManualCameraRendererPatch.cs" />
     <Compile Include="Patches\StartOfRoundPatch.cs" />

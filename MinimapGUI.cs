@@ -126,7 +126,7 @@ namespace LethalCompanyMinimap.Component
             }
         }
 
-        private int CalculateValidTargetIndex(int setRadarTargetIndex)
+        public int CalculateValidTargetIndex(int setRadarTargetIndex)
         {
             // If setRadarTargetIndex is not valid, calculate the next valid one
             List<TransformAndName> radarTargets = StartOfRound.Instance.mapScreen.radarTargets;
