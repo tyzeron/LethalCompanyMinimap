@@ -24,9 +24,14 @@ namespace LethalCompanyMinimap.Component
         public int minimapSize;
         public float minimapXPos;
         public float minimapYPos;
+        public bool showLoots;
+        public bool showEnemies;
+        public bool showPlayers;
+        public bool showRadarBoosters;
+        public bool showTerminalCodes;
         public bool freezePlayerIndex;
 
-        private string[] navbarStr = { "Minimap Settings", "Select Target", "Keybinds" };
+        private string[] navbarStr = { "Minimap", "Icons", "Select Target", "Keybinds" };
         private readonly KeyboardShortcut escapeKey = new KeyboardShortcut(KeyCode.Escape);
         private int navbarIndex = 0;
         public bool isGUIOpen = false;
@@ -255,7 +260,7 @@ namespace LethalCompanyMinimap.Component
                 switch (navbarIndex)
                 {
                     case 0:
-                        enableMinimap = GUI.Toggle(new Rect(guiCenterX, guiYpos + 90, ITEMWIDTH, 30), enableMinimap, "Enable Minimap", toggleStyle);
+                        enableMinimap = GUI.Toggle(new Rect(guiCenterX, guiYpos + 90, ITEMWIDTH, 30), enableMinimap, "Toggle Minimap", toggleStyle);
 
                         GUI.Label(new Rect(guiCenterX, guiYpos + 130, ITEMWIDTH, 30), $"Minimap Size: {minimapSize}", labelStyle);
                         minimapSize = (int)GUI.HorizontalSlider(new Rect(guiCenterX, guiYpos + 160, ITEMWIDTH, 30), minimapSize, 0, 1000);
@@ -278,6 +283,14 @@ namespace LethalCompanyMinimap.Component
                         extraGUIHeight = 0;
                         break;
                     case 1:
+                        showLoots = GUI.Toggle(new Rect(guiCenterX, guiYpos + 90, ITEMWIDTH, 30), showLoots, "Show Loots", toggleStyle);
+                        //showEnemies = GUI.Toggle(new Rect(guiCenterX, guiYpos + 130, ITEMWIDTH, 30), showEnemies, "Show Enemies", toggleStyle);
+                        GUI.Toggle(new Rect(guiCenterX, guiYpos + 130, ITEMWIDTH, 30), true, "(TO BE ADDED) Show Enemies", toggleStyle);
+                        showPlayers = GUI.Toggle(new Rect(guiCenterX, guiYpos + 170, ITEMWIDTH, 30), showPlayers, "Show Players", toggleStyle);
+                        showRadarBoosters = GUI.Toggle(new Rect(guiCenterX, guiYpos + 210, ITEMWIDTH, 30), showRadarBoosters, "Show Radar Boosters", toggleStyle);
+                        showTerminalCodes = GUI.Toggle(new Rect(guiCenterX, guiYpos + 250, ITEMWIDTH, 30), showTerminalCodes, "Show Terminal Codes", toggleStyle);
+                        break;
+                    case 2:
                         List<TransformAndName> players = StartOfRound.Instance.mapScreen.radarTargets;
 
                         GUI.Label(new Rect(guiCenterX, guiYpos + 90, ITEMWIDTH, 30), $"Selected Target: {GetPlayerNameAtIndex(playerIndex)}", labelStyle);
@@ -304,7 +317,7 @@ namespace LethalCompanyMinimap.Component
                         }
                         extraGUIHeight = buttonCount > 7 ? (buttonCount - 7) * 40 : 0;
                         break;
-                    case 2:
+                    case 3:
                         string guiKeyButtonLabel = isSettingGUIKey ? "Press a Key..." : $"Open Mod Menu: {guiKey}";
                         if (GUI.Button(new Rect(guiCenterX, guiYpos + 90, ITEMWIDTH, 30), guiKeyButtonLabel))
                         {

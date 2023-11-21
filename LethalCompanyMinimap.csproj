@@ -62,6 +62,10 @@
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
@@ -83,6 +87,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MinimapGUI.cs" />
+    <Compile Include="Patches\RadarBoosterItemPatch.cs" />
+    <Compile Include="Patches\PlayerControllerBPatch.cs" />
+    <Compile Include="Patches\EnemyAIPatch.cs" />
+    <Compile Include="Patches\TerminalAccessibleObjectPatch.cs" />
+    <Compile Include="Patches\GrabbableObjectPatch.cs" />
     <Compile Include="Patches\ShipTeleporterPatch.cs" />
     <Compile Include="Patches\QuickMenuManagerPatch.cs" />
     <Compile Include="Patches\ManualCameraRendererPatch.cs" />

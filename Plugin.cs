@@ -33,6 +33,11 @@ namespace LethalCompanyMinimap
         private static ConfigEntry<int> minimapSizeConfig;
         private static ConfigEntry<float> minimapXPosConfig;
         private static ConfigEntry<float> minimapYPosConfig;
+        private static ConfigEntry<bool> showLootsConfig;
+        private static ConfigEntry<bool> showEnemiesConfig;
+        private static ConfigEntry<bool> showPlayersConfig;
+        private static ConfigEntry<bool> showRadarBoostersConfig;
+        private static ConfigEntry<bool> showTerminalCodesConfig;
         private static ConfigEntry<bool> freezePlayerIndexConfig;
 
         public static MinimapMod Instance;
@@ -55,6 +60,11 @@ namespace LethalCompanyMinimap
             harmony.PatchAll(typeof(ManualCameraRendererPatch));
             harmony.PatchAll(typeof(QuickMenuManagerPatch));
             harmony.PatchAll(typeof(ShipTeleporterPatch));
+            harmony.PatchAll(typeof(GrabbableObjectPatch));
+            harmony.PatchAll(typeof(TerminalAccessibleObjectPatch));
+            harmony.PatchAll(typeof(EnemyAIPatch));
+            harmony.PatchAll(typeof(PlayerControllerBPatch));
+            harmony.PatchAll(typeof(RadarBoosterItemPatch));
 
             // Initialize Minimap Mod Menu GUI
             GameObject minimapGUIObject = new GameObject("MinimapGUI");
@@ -76,6 +86,11 @@ namespace LethalCompanyMinimap
             minimapSizeConfig = Config.Bind("Basic Settings", "Minimap Size", defaultMinimapSize, "Adjusts the size of your Minimap");
             minimapXPosConfig = Config.Bind("Basic Settings", "X Offset", defaultXoffset, "Shifts the Minimap position horizontally");
             minimapYPosConfig = Config.Bind("Basic Settings", "Y Offset", defaultYoffset, "Shifts the Minimap position vertically");
+            showLootsConfig = Config.Bind("Minimap Icons", "Show Loots", true, "Toggles visibility of loots (small triangles) on your Minimap");
+            showEnemiesConfig = Config.Bind("Minimap Icons", "Show Enemies", true, "Toggles visibility of enemies (red circles) on your Minimap");
+            showPlayersConfig = Config.Bind("Minimap Icons", "Show Players", true, "Toggles visibility of players (cyan circles) on your Minimap");
+            showRadarBoostersConfig = Config.Bind("Minimap Icons", "Show Radar Boosters", true, "Toggles visibility of radar boosters (blue circles) on your Minimap");
+            showTerminalCodesConfig = Config.Bind("Minimap Icons", "Show Terminal Codes", true, "Toggles visibility of terminal codes on your Minimap");
             freezePlayerIndexConfig = Config.Bind("Advance Settings", "Override Ship Controls", false, "Disables the ability to change the Minimap focus through the ship control panel, allowing Minimap focus changes only through the mod menu");
         }
 
@@ -87,6 +102,11 @@ namespace LethalCompanyMinimap
             minimapGUI.minimapSize = minimapSizeConfig.Value;
             minimapGUI.minimapXPos = minimapXPosConfig.Value;
             minimapGUI.minimapYPos = minimapYPosConfig.Value;
+            minimapGUI.showLoots = showLootsConfig.Value;
+            minimapGUI.showEnemies = showEnemiesConfig.Value;
+            minimapGUI.showPlayers = showPlayersConfig.Value;
+            minimapGUI.showRadarBoosters = showRadarBoostersConfig.Value;
+            minimapGUI.showTerminalCodes = showTerminalCodesConfig.Value;
             minimapGUI.freezePlayerIndex = freezePlayerIndexConfig.Value;
         }
 
@@ -98,6 +118,11 @@ namespace LethalCompanyMinimap
             minimapSizeConfig.Value = minimapGUI.minimapSize;
             minimapXPosConfig.Value = minimapGUI.minimapXPos;
             minimapYPosConfig.Value = minimapGUI.minimapYPos;
+            showLootsConfig.Value = minimapGUI.showLoots;
+            showEnemiesConfig.Value = minimapGUI.showEnemies;
+            showPlayersConfig.Value = minimapGUI.showPlayers;
+            showRadarBoostersConfig.Value = minimapGUI.showRadarBoosters;
+            showTerminalCodesConfig.Value = minimapGUI.showTerminalCodes;
             freezePlayerIndexConfig.Value = minimapGUI.freezePlayerIndex;
         }
     }
