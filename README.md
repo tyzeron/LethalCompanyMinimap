@@ -49,6 +49,8 @@ the hotkey to toggle minimap
 - Easily reset specific (or all) configurable settings
 - All settings configurable via a user-friendly in-game GUI
 - All configurable settings saved across sessions
+- Toggle visibility of different Minimap icons
+    - Loots, Players, Terminal Codes, and Radar Boosters
 
 ![Minimap GUI](Images/minimap-gui.png)
 
@@ -63,7 +65,7 @@ the hotkey to toggle minimap
     - The `BepInEx` and `plugins` folder should have been generated in the previous step
     - **Example:** `C:\Program Files\Steam\steamapps\common\Lethal Company\BepInEx\plugins`
 
-4. Download the Minimap mod from the [Release Page](https://github.com/tyzeron/LethalCompanyMinimap/releases)
+4. Download the Minimap mod from the [Thunderstore](https://thunderstore.io/c/lethal-company/p/Tyzeron/Minimap/)
 
 5. Copy the downloaded **DLL file** (ex. `Minimap-v1.x.x.dll`) to the `plugins` folder
 
