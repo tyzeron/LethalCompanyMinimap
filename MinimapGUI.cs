@@ -44,6 +44,7 @@ namespace LethalCompanyMinimap.Component
         private bool wasSettingGUIKey = false;
         private bool wasSettingToggleMinimapKey = false;
         private int extraGUIHeight = 0;
+        private CursorLockMode lastCursorState = Cursor.lockState;
 
         private GUIStyle menuStyle;
         private GUIStyle buttonStyle;
@@ -170,6 +171,7 @@ namespace LethalCompanyMinimap.Component
                 {
                     isGUIOpen = true;
                     Cursor.visible = true;
+                    lastCursorState = Cursor.lockState;
                     Cursor.lockState = CursorLockMode.Confined;
                 }
                 else if (wasSettingGUIKey)
@@ -180,7 +182,7 @@ namespace LethalCompanyMinimap.Component
                 {
                     isGUIOpen = false;
                     Cursor.visible = false;
-                    Cursor.lockState = CursorLockMode.Locked;
+                    Cursor.lockState = lastCursorState;
                 }
             }
             // When Toggle Minimap key is pressed

@@ -86,6 +86,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Patches\HUDManagerPatch.cs" />
     <Compile Include="VersionChecker.cs" />
     <Compile Include="MinimapGUI.cs" />
     <Compile Include="Patches\RadarBoosterItemPatch.cs" />
@@ -96,7 +97,6 @@
     <Compile Include="Patches\ShipTeleporterPatch.cs" />
     <Compile Include="Patches\QuickMenuManagerPatch.cs" />
     <Compile Include="Patches\ManualCameraRendererPatch.cs" />
-    <Compile Include="Patches\StartOfRoundPatch.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

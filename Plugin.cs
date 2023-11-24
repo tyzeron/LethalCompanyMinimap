@@ -60,7 +60,6 @@ namespace LethalCompanyMinimap
             _ = VersionChecker.GetLatestVersionAsync();
 
             // Patching stuff
-            harmony.PatchAll(typeof(StartofRoundPatch));
             harmony.PatchAll(typeof(ManualCameraRendererPatch));
             harmony.PatchAll(typeof(QuickMenuManagerPatch));
             harmony.PatchAll(typeof(ShipTeleporterPatch));
@@ -69,6 +68,7 @@ namespace LethalCompanyMinimap
             harmony.PatchAll(typeof(EnemyAIPatch));
             harmony.PatchAll(typeof(PlayerControllerBPatch));
             harmony.PatchAll(typeof(RadarBoosterItemPatch));
+            harmony.PatchAll(typeof(HUDManagerPatch));
 
             // Initialize Minimap Mod Menu GUI
             GameObject minimapGUIObject = new GameObject("MinimapGUI");
