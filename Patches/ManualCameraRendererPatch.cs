@@ -19,12 +19,15 @@ namespace LethalCompanyMinimap.Patches
         static void MapCameraAlwaysEnabledPatch(ref Camera ___mapCamera)
         {
             // Ensure that the Map camera is always being updated even when outside the ship
-            ___mapCamera.enabled = true;
+            if (___mapCamera != null)
+            {
+                ___mapCamera.enabled = true;
+            }
         }
 
         [HarmonyPatch("updateMapTarget")]
         [HarmonyPrefix]
-        static bool RadarMapTargetPatch(int setRadarTargetIndex, ref PlayerControllerB ___targetedPlayer, ref List<TransformAndName> ___radarTargets, ref int ___targetTransformIndex)
+        static bool RadarMapTargetPatch(int setRadarTargetIndex, ref int ___targetTransformIndex)
         {
             MinimapMod.minimapGUI.realPlayerIndex = setRadarTargetIndex;
 

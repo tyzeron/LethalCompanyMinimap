@@ -6,6 +6,7 @@
 using HarmonyLib;
 using System.Reflection;
 using TMPro;
+using UnityEngine;
 
 namespace LethalCompanyMinimap.Patches
 {
@@ -19,16 +20,19 @@ namespace LethalCompanyMinimap.Patches
         static void LootVisibilityOnMapPatch(GrabbableObject __instance)
         {
             // Toggle loot visibility based on user's Minimap settings
-            if (MinimapMod.minimapGUI.showLoots != __instance.radarIcon.gameObject.activeSelf)
+            if (__instance != null && __instance.radarIcon != null && __instance.radarIcon.gameObject != null)
             {
-                __instance.radarIcon.gameObject.SetActive(MinimapMod.minimapGUI.showLoots);
+                if (MinimapMod.minimapGUI.showLoots != __instance.radarIcon.gameObject.activeSelf)
+                {
+                    __instance.radarIcon.gameObject.SetActive(MinimapMod.minimapGUI.showLoots);
+                }
             }
 
             // Toggle terminal code visibility based on user's Minimap settings
             if (showTerminalCodes != MinimapMod.minimapGUI.showTerminalCodes)
             {
                 showTerminalCodes = MinimapMod.minimapGUI.showTerminalCodes;
-                TerminalAccessibleObject[] taoObjecs = UnityEngine.Object.FindObjectsOfType<TerminalAccessibleObject>();
+                TerminalAccessibleObject[] taoObjecs = Object.FindObjectsOfType<TerminalAccessibleObject>();
                 FieldInfo mapRadarTextField = AccessTools.Field(typeof(TerminalAccessibleObject), "mapRadarText");
                 for (int i = 0; i < taoObjecs.Length; i++)
                 {
