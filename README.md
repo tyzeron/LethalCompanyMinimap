@@ -50,7 +50,8 @@ the hotkey to toggle minimap
 - All settings configurable via a user-friendly in-game GUI
 - All configurable settings saved across sessions
 - Toggle visibility of different Minimap icons
-    - Loots, Players, Terminal Codes, and Radar Boosters
+    - Loots, Enemies, Players, Terminal Codes, and Radar Boosters
+- Informs if the mod is outdated and a newer version is available
 
 ![Minimap GUI](Images/minimap-gui.png)
 
