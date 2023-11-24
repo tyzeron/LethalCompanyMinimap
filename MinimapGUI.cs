@@ -6,9 +6,7 @@
 using BepInEx.Configuration;
 using GameNetcodeStuff;
 using System.Collections.Generic;
-using System.ComponentModel;
 using UnityEngine;
-using static UnityEngine.EventSystems.EventTrigger;
 
 namespace LethalCompanyMinimap.Component
 {
@@ -284,8 +282,7 @@ namespace LethalCompanyMinimap.Component
                         break;
                     case 1:
                         showLoots = GUI.Toggle(new Rect(guiCenterX, guiYpos + 90, ITEMWIDTH, 30), showLoots, "Show Loots", toggleStyle);
-                        //showEnemies = GUI.Toggle(new Rect(guiCenterX, guiYpos + 130, ITEMWIDTH, 30), showEnemies, "Show Enemies", toggleStyle);
-                        GUI.Toggle(new Rect(guiCenterX, guiYpos + 130, ITEMWIDTH, 30), true, "(TO BE ADDED) Show Enemies", toggleStyle);
+                        showEnemies = GUI.Toggle(new Rect(guiCenterX, guiYpos + 130, ITEMWIDTH, 30), showEnemies, "Show Enemies", toggleStyle);
                         showPlayers = GUI.Toggle(new Rect(guiCenterX, guiYpos + 170, ITEMWIDTH, 30), showPlayers, "Show Players", toggleStyle);
                         showRadarBoosters = GUI.Toggle(new Rect(guiCenterX, guiYpos + 210, ITEMWIDTH, 30), showRadarBoosters, "Show Radar Boosters", toggleStyle);
                         showTerminalCodes = GUI.Toggle(new Rect(guiCenterX, guiYpos + 250, ITEMWIDTH, 30), showTerminalCodes, "Show Terminal Codes", toggleStyle);

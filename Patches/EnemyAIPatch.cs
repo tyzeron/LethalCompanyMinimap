@@ -4,6 +4,7 @@
 // ----------------------------------------------------------------------
 
 using HarmonyLib;
+using UnityEngine;
 
 namespace LethalCompanyMinimap.Patches
 {
@@ -11,16 +12,32 @@ namespace LethalCompanyMinimap.Patches
     internal class EnemyAIPatch
     {
 
-        //[HarmonyPatch(nameof(EnemyAI.Update))]
-        //[HarmonyPostfix]
-        //static void EnemyVisibilityOnMapPatch(EnemyAI __instance)
-        //{
-        //    // Toggle enemy visibility based on user's Minimap settings
-        //    if (MinimapMod.minimapGUI.showEnemies != __instance.creatureAnimator.gameObject.activeSelf)
-        //    {
-        //        __instance.creatureAnimator.gameObject.SetActive(MinimapMod.minimapGUI.showEnemies);
-        //    }
-        //}
+        private static GameObject FindMapDot(GameObject enemyObject)
+        {
+            foreach (Transform child in enemyObject.transform)
+            {
+                if (child.name.StartsWith("MapDot"))
+                {
+                    return child.gameObject;
+                }
+            }
+            return null;
+        }
+
+        [HarmonyPatch(nameof(EnemyAI.Update))]
+        [HarmonyPostfix]
+        static void EnemyVisibilityOnMapPatch(EnemyAI __instance)
+        {
+            // Toggle enemy visibility based on user's Minimap settings
+            if (__instance != null && __instance.gameObject != null)
+            {
+                GameObject mapDot = FindMapDot(__instance.gameObject);
+                if (mapDot != null && MinimapMod.minimapGUI.showEnemies != mapDot.activeSelf)
+                {
+                    mapDot.SetActive(MinimapMod.minimapGUI.showEnemies);
+                }
+            }
+        }
 
     }
 }
