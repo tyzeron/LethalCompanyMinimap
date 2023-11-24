@@ -4,6 +4,8 @@
 // ----------------------------------------------------------------------
 
 using HarmonyLib;
+using System;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,6 +14,7 @@ namespace LethalCompanyMinimap.Patches
     [HarmonyPatch(typeof(StartOfRound))]
     internal class StartofRoundPatch
     {
+        private static bool checkUpdate = false;
         private const int padding = -5;
         private static RawImage minimap;
         private static RectTransform tooltips;
@@ -21,6 +24,26 @@ namespace LethalCompanyMinimap.Patches
         [HarmonyPostfix]
         static void DisplayMinimapPatch()
         {
+            // Check for updates
+            if (checkUpdate == false)
+            {
+                checkUpdate = true;
+                string message = null;
+                if (VersionChecker.latestVersion == null)
+                {
+                    message = "<color=red>Failed to check for latest version</color>";
+                }
+                else if (new Version(MinimapMod.modVersion) < new Version(VersionChecker.latestVersion))
+                {
+                    message = $"<color=white>There is a new version available: </color><color=green>{VersionChecker.latestVersion}</color>";
+                }
+                if (message != null)
+                {
+                    MethodInfo addChatMessageMethod = HUDManager.Instance.GetType().GetMethod("AddChatMessage", BindingFlags.NonPublic | BindingFlags.Instance);
+                    addChatMessageMethod?.Invoke(HUDManager.Instance, new object[] { $"<color=#00ffffff>[{MinimapMod.modName}]</color> {message}" });
+                }
+            }
+
             // Get the Minimap size from the settings
             int size = MinimapMod.minimapGUI.minimapSize;
 

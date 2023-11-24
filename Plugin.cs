@@ -20,6 +20,7 @@ namespace LethalCompanyMinimap
         public const string modName = "Minimap";
         public const string modVersion = "1.0.2";
         public const string modAuthor = "Tyzeron";
+        public const string modRepository = "tyzeron/LethalCompanyMinimap";
 
         public static KeyboardShortcut defaultGuiKey = new KeyboardShortcut(KeyCode.F1);
         public static KeyboardShortcut defaultToggleMinimapKey = new KeyboardShortcut(KeyCode.F2);
@@ -54,6 +55,9 @@ namespace LethalCompanyMinimap
 
             mls = BepInEx.Logging.Logger.CreateLogSource(modGUID);
             mls.LogInfo($"{modName} {modVersion} loaded!");
+
+            // Start the Task of getting the latest version
+            _ = VersionChecker.GetLatestVersionAsync();
 
             // Patching stuff
             harmony.PatchAll(typeof(StartofRoundPatch));
