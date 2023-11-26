@@ -24,12 +24,16 @@ namespace LethalCompanyMinimap
 
         public static KeyboardShortcut defaultGuiKey = new KeyboardShortcut(KeyCode.F1);
         public static KeyboardShortcut defaultToggleMinimapKey = new KeyboardShortcut(KeyCode.F2);
+        public static KeyboardShortcut defaultToggleOverrideKey = new KeyboardShortcut(KeyCode.F3);
+        public static KeyboardShortcut defaultSwitchTargetKey = new KeyboardShortcut(KeyCode.F4);
         public const int defaultMinimapSize = 200;
         public const float defaultXoffset = 0f;
         public const float defaultYoffset = 0f;
 
         private static ConfigEntry<KeyboardShortcut> guiKeyConfig;
         private static ConfigEntry<KeyboardShortcut> toggleMinimapKeyConfig;
+        private static ConfigEntry<KeyboardShortcut> toggleOverrideKeyConfig;
+        private static ConfigEntry<KeyboardShortcut> switchTargetKeyConfig;
         private static ConfigEntry<bool> enableMinimapConfig;
         private static ConfigEntry<int> minimapSizeConfig;
         private static ConfigEntry<float> minimapXPosConfig;
@@ -87,6 +91,8 @@ namespace LethalCompanyMinimap
         {
             guiKeyConfig = Config.Bind("Hotkeys", "Open Mod Menu", defaultGuiKey, "Hotkey to open the Minimap mod menu");
             toggleMinimapKeyConfig = Config.Bind("Hotkeys", "Toggle Minimap", defaultToggleMinimapKey, "Hotkey to toggle the visibility of your Minimap");
+            toggleOverrideKeyConfig = Config.Bind("Hotkeys", "Toggle Override Ship", defaultToggleOverrideKey, "Hotkey to toggle the override ship controls");
+            switchTargetKeyConfig = Config.Bind("Hotkeys", "Switch Minimap Focus", defaultSwitchTargetKey, "Hotkey to switch the Minimap focus");
             enableMinimapConfig = Config.Bind("Basic Settings", "Enable Minimap", true, "Toggles visibility of your Minimap");
             minimapSizeConfig = Config.Bind("Basic Settings", "Minimap Size", defaultMinimapSize, "Adjusts the size of your Minimap");
             minimapXPosConfig = Config.Bind("Basic Settings", "X Offset", defaultXoffset, "Shifts the Minimap position horizontally");
@@ -103,6 +109,8 @@ namespace LethalCompanyMinimap
         {
             minimapGUI.guiKey.Key = guiKeyConfig.Value;
             minimapGUI.toggleMinimapKey.Key = toggleMinimapKeyConfig.Value;
+            minimapGUI.toggleOverrideKey.Key = toggleOverrideKeyConfig.Value;
+            minimapGUI.switchTargetKey.Key = switchTargetKeyConfig.Value;
             minimapGUI.enableMinimap = enableMinimapConfig.Value;
             minimapGUI.minimapSize = minimapSizeConfig.Value;
             minimapGUI.minimapXPos = minimapXPosConfig.Value;
@@ -119,6 +127,8 @@ namespace LethalCompanyMinimap
         {
             guiKeyConfig.Value = minimapGUI.guiKey.Key;
             toggleMinimapKeyConfig.Value = minimapGUI.toggleMinimapKey.Key;
+            toggleOverrideKeyConfig.Value = minimapGUI.toggleOverrideKey.Key;
+            switchTargetKeyConfig.Value = minimapGUI.switchTargetKey.Key;
             enableMinimapConfig.Value = minimapGUI.enableMinimap;
             minimapSizeConfig.Value = minimapGUI.minimapSize;
             minimapXPosConfig.Value = minimapGUI.minimapXPos;

@@ -5,7 +5,6 @@
 
 using BepInEx.Configuration;
 using GameNetcodeStuff;
-using HarmonyLib;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,7 +18,9 @@ namespace LethalCompanyMinimap.Component
 
         public ModHotkey guiKey = new ModHotkey(MinimapMod.defaultGuiKey, null);
         public ModHotkey toggleMinimapKey = new ModHotkey(MinimapMod.defaultToggleMinimapKey, null);
-        public HotkeyManager hotkeyManager = new HotkeyManager(2);
+        public ModHotkey toggleOverrideKey = new ModHotkey(MinimapMod.defaultToggleOverrideKey, null);
+        public ModHotkey switchTargetKey = new ModHotkey(MinimapMod.defaultSwitchTargetKey, null);
+        public HotkeyManager hotkeyManager = new HotkeyManager(4);
 
         public bool enableMinimap;
         public int minimapSize;
@@ -40,6 +41,7 @@ namespace LethalCompanyMinimap.Component
         public int playerIndex = 0;
         public int realPlayerIndex = 0;
         private bool lockPrefix = false;
+        string prefix = "MONITORING";
         private int extraGUIHeight = 0;
         private CursorLockMode lastCursorState = Cursor.lockState;
 
@@ -55,9 +57,13 @@ namespace LethalCompanyMinimap.Component
 
             guiKey.OnKey = ToggleGUI;
             toggleMinimapKey.OnKey = () => { enableMinimap = !enableMinimap; };
+            toggleOverrideKey.OnKey = () => { freezePlayerIndex = !freezePlayerIndex; };
+            switchTargetKey.OnKey = SwitchTarget;
 
             hotkeyManager.AllHotkeys[0] = guiKey;
             hotkeyManager.AllHotkeys[1] = toggleMinimapKey;
+            hotkeyManager.AllHotkeys[2] = toggleOverrideKey;
+            hotkeyManager.AllHotkeys[3] = switchTargetKey;
         }
 
         private Texture2D MakeTex(int width, int height, Color col)
@@ -89,13 +95,6 @@ namespace LethalCompanyMinimap.Component
 
         public void SetMinimapTarget(int targetTransformIndex, bool lockOn = true)
         {
-            string prefix = "MONITORING";
-            lockPrefix = false;
-            if (lockOn)
-            {
-                prefix = "LOCKED";
-                lockPrefix = true;
-            }
             playerIndex = targetTransformIndex;
             StartOfRound.Instance.mapScreen.targetTransformIndex = playerIndex;
             StartOfRound.Instance.mapScreen.targetedPlayer = StartOfRound.Instance.mapScreen.radarTargets[playerIndex].transform.gameObject.GetComponent<PlayerControllerB>();
@@ -163,6 +162,18 @@ namespace LethalCompanyMinimap.Component
             return setRadarTargetIndex;
         }
 
+        private void SwitchTarget()
+        {
+            List<TransformAndName> players = StartOfRound.Instance != null ? StartOfRound.Instance.mapScreen.radarTargets : new List<TransformAndName>();
+            if (!freezePlayerIndex || players.Count < 1)
+            {
+                return;
+            }
+            int nextIndex = (playerIndex + 1) % players.Count;
+            nextIndex = CalculateValidTargetIndex(nextIndex);
+            SetMinimapTarget(nextIndex);
+        }
+
         private void ToggleGUI()
         {
             if (!isGUIOpen)
@@ -213,8 +224,19 @@ namespace LethalCompanyMinimap.Component
                 }
             }
 
+            // Update the text prefix
+            if (freezePlayerIndex != lockPrefix)
+            {
+                if (StartOfRound.Instance != null)
+                {
+                    lockPrefix = freezePlayerIndex;
+                    prefix = freezePlayerIndex ? "LOCKED" : "MONITORING";
+                    StartOfRound.Instance.mapScreenPlayerName.text = $"{prefix}: {StartOfRound.Instance.mapScreen.radarTargets[playerIndex].name}";
+                }
+            }
+
             // Sync Minimap Target with the rest
-            if (!freezePlayerIndex && (lockPrefix || playerIndex != realPlayerIndex))
+            if (!freezePlayerIndex && (playerIndex != realPlayerIndex))
             {
                 realPlayerIndex = CalculateValidTargetIndex(realPlayerIndex);
                 SetMinimapTarget(realPlayerIndex, false);
@@ -314,7 +336,21 @@ namespace LethalCompanyMinimap.Component
                             toggleMinimapKey.IsSettingKey = true;
                             toggleMinimapKey.WasSettingKey = true;
                         }
-                        if (GUI.Button(new Rect(guiCenterX, guiYpos + 200, ITEMWIDTH, 30), "Reset to Default Keybinds"))
+                        string toggleOverrideKeyButtonLabel = toggleOverrideKey.IsSettingKey ? "Press a Key..." : $"Toggle Ship Override: {toggleOverrideKey.Key}";
+                        if (GUI.Button(new Rect(guiCenterX, guiYpos + 170, ITEMWIDTH, 30), toggleOverrideKeyButtonLabel))
+                        {
+                            hotkeyManager.ResetSettingKey();
+                            toggleOverrideKey.IsSettingKey = true;
+                            toggleOverrideKey.WasSettingKey = true;
+                        }
+                        string switchTargetKeyButtonLabel = switchTargetKey.IsSettingKey ? "Press a Key..." : $"Switch Minimap Focus: {switchTargetKey.Key}";
+                        if (GUI.Button(new Rect(guiCenterX, guiYpos + 210, ITEMWIDTH, 30), switchTargetKeyButtonLabel))
+                        {
+                            hotkeyManager.ResetSettingKey();
+                            switchTargetKey.IsSettingKey = true;
+                            switchTargetKey.WasSettingKey = true;
+                        }
+                        if (GUI.Button(new Rect(guiCenterX, guiYpos + 280, ITEMWIDTH, 30), "Reset to Default Keybinds"))
                         {
                             hotkeyManager.ResetToDefaultKey();
                         }
