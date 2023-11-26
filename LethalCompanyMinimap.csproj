@@ -87,6 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Patches\HUDManagerPatch.cs" />
+    <Compile Include="Patches\TimeOfDayPatch.cs" />
     <Compile Include="VersionChecker.cs" />
     <Compile Include="MinimapGUI.cs" />
     <Compile Include="Patches\RadarBoosterItemPatch.cs" />
