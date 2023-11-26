@@ -29,6 +29,7 @@ namespace LethalCompanyMinimap.Component
         public bool showLoots;
         public bool showEnemies;
         public bool showPlayers;
+        public bool showDeadPlayers;
         public bool showRadarBoosters;
         public bool showTerminalCodes;
         public bool freezePlayerIndex;
@@ -291,8 +292,9 @@ namespace LethalCompanyMinimap.Component
                         showLoots = GUI.Toggle(new Rect(guiCenterX, guiYpos + 90, ITEMWIDTH, 30), showLoots, "Show Loots", toggleStyle);
                         showEnemies = GUI.Toggle(new Rect(guiCenterX, guiYpos + 130, ITEMWIDTH, 30), showEnemies, "Show Enemies", toggleStyle);
                         showPlayers = GUI.Toggle(new Rect(guiCenterX, guiYpos + 170, ITEMWIDTH, 30), showPlayers, "Show Players", toggleStyle);
-                        showRadarBoosters = GUI.Toggle(new Rect(guiCenterX, guiYpos + 210, ITEMWIDTH, 30), showRadarBoosters, "Show Radar Boosters", toggleStyle);
-                        showTerminalCodes = GUI.Toggle(new Rect(guiCenterX, guiYpos + 250, ITEMWIDTH, 30), showTerminalCodes, "Show Terminal Codes", toggleStyle);
+                        showDeadPlayers = GUI.Toggle(new Rect(guiCenterX, guiYpos + 210, ITEMWIDTH, 30), showDeadPlayers, "Show Dead Players", toggleStyle);
+                        showRadarBoosters = GUI.Toggle(new Rect(guiCenterX, guiYpos + 250, ITEMWIDTH, 30), showRadarBoosters, "Show Radar Boosters", toggleStyle);
+                        showTerminalCodes = GUI.Toggle(new Rect(guiCenterX, guiYpos + 290, ITEMWIDTH, 30), showTerminalCodes, "Show Terminal Codes", toggleStyle);
                         break;
                     case 2:
                         List<TransformAndName> players = StartOfRound.Instance != null ? StartOfRound.Instance.mapScreen.radarTargets : new List<TransformAndName>();
@@ -336,14 +338,14 @@ namespace LethalCompanyMinimap.Component
                             toggleMinimapKey.IsSettingKey = true;
                             toggleMinimapKey.WasSettingKey = true;
                         }
-                        string toggleOverrideKeyButtonLabel = toggleOverrideKey.IsSettingKey ? "Press a Key..." : $"Toggle Ship Override: {toggleOverrideKey.Key}";
+                        string toggleOverrideKeyButtonLabel = toggleOverrideKey.IsSettingKey ? "Press a Key..." : $"Override Ship Controls: {toggleOverrideKey.Key}";
                         if (GUI.Button(new Rect(guiCenterX, guiYpos + 170, ITEMWIDTH, 30), toggleOverrideKeyButtonLabel))
                         {
                             hotkeyManager.ResetSettingKey();
                             toggleOverrideKey.IsSettingKey = true;
                             toggleOverrideKey.WasSettingKey = true;
                         }
-                        string switchTargetKeyButtonLabel = switchTargetKey.IsSettingKey ? "Press a Key..." : $"Switch Minimap Focus: {switchTargetKey.Key}";
+                        string switchTargetKeyButtonLabel = switchTargetKey.IsSettingKey ? "Press a Key..." : $"Switch Minimap Target: {switchTargetKey.Key}";
                         if (GUI.Button(new Rect(guiCenterX, guiYpos + 210, ITEMWIDTH, 30), switchTargetKeyButtonLabel))
                         {
                             hotkeyManager.ResetSettingKey();
