@@ -18,7 +18,7 @@ namespace LethalCompanyMinimap
     {
         public const string modGUID = "LethalCompanyMinimap";
         public const string modName = "Minimap";
-        public const string modVersion = "1.0.2";
+        public const string modVersion = "1.0.3";
         public const string modAuthor = "Tyzeron";
         public const string modRepository = "tyzeron/LethalCompanyMinimap";
 

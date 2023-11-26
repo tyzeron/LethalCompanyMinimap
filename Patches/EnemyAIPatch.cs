@@ -12,13 +12,21 @@ namespace LethalCompanyMinimap.Patches
     internal class EnemyAIPatch
     {
 
-        private static GameObject FindMapDot(GameObject enemyObject)
+        private static GameObject FindMapDot(GameObject enemyObject, bool isModel = false)
         {
             foreach (Transform child in enemyObject.transform)
             {
                 if (child.name.StartsWith("MapDot"))
                 {
                     return child.gameObject;
+                }
+                else if (!isModel && (child.name.EndsWith("Model") || child.name.EndsWith("ModelContainer")))
+                {
+                    GameObject mapDot = FindMapDot(child.gameObject, isModel = true);
+                    if (mapDot != null)
+                    {
+                        return mapDot;
+                    }
                 }
             }
             return null;

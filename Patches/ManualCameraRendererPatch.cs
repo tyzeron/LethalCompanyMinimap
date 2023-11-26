@@ -3,9 +3,7 @@
 // Licensed under the GNU Affero General Public License, Version 3
 // ----------------------------------------------------------------------
 
-using GameNetcodeStuff;
 using HarmonyLib;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace LethalCompanyMinimap.Patches
