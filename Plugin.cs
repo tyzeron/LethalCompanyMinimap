@@ -73,7 +73,7 @@ namespace LethalCompanyMinimap
 
             // Initialize Minimap Mod Menu GUI
             GameObject minimapGUIObject = new GameObject("MinimapGUI");
-            Object.DontDestroyOnLoad(minimapGUIObject);
+            DontDestroyOnLoad(minimapGUIObject);
             minimapGUIObject.hideFlags = HideFlags.HideAndDontSave;
             minimapGUIObject.AddComponent<MinimapGUI>();
             minimapGUI = (MinimapGUI)minimapGUIObject.GetComponent("MinimapGUI");
@@ -101,8 +101,8 @@ namespace LethalCompanyMinimap
 
         public void SyncGUIFromConfigs()
         {
-            minimapGUI.guiKey = guiKeyConfig.Value;
-            minimapGUI.toggleMinimapKey = toggleMinimapKeyConfig.Value;
+            minimapGUI.guiKey.Key = guiKeyConfig.Value;
+            minimapGUI.toggleMinimapKey.Key = toggleMinimapKeyConfig.Value;
             minimapGUI.enableMinimap = enableMinimapConfig.Value;
             minimapGUI.minimapSize = minimapSizeConfig.Value;
             minimapGUI.minimapXPos = minimapXPosConfig.Value;
@@ -117,8 +117,8 @@ namespace LethalCompanyMinimap
 
         public void SyncConfigFromGUI()
         {
-            guiKeyConfig.Value = minimapGUI.guiKey;
-            toggleMinimapKeyConfig.Value = minimapGUI.toggleMinimapKey;
+            guiKeyConfig.Value = minimapGUI.guiKey.Key;
+            toggleMinimapKeyConfig.Value = minimapGUI.toggleMinimapKey.Key;
             enableMinimapConfig.Value = minimapGUI.enableMinimap;
             minimapSizeConfig.Value = minimapGUI.minimapSize;
             minimapXPosConfig.Value = minimapGUI.minimapXPos;

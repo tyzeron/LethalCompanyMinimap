@@ -5,6 +5,7 @@
 
 using BepInEx.Configuration;
 using GameNetcodeStuff;
+using HarmonyLib;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,8 +17,10 @@ namespace LethalCompanyMinimap.Component
         private const int GUI_HEIGHT = 500;
         private const int ITEMWIDTH = 300;
 
-        public KeyboardShortcut guiKey;
-        public KeyboardShortcut toggleMinimapKey;
+        public ModHotkey guiKey = new ModHotkey(MinimapMod.defaultGuiKey, null);
+        public ModHotkey toggleMinimapKey = new ModHotkey(MinimapMod.defaultToggleMinimapKey, null);
+        public HotkeyManager hotkeyManager = new HotkeyManager(2);
+
         public bool enableMinimap;
         public int minimapSize;
         public float minimapXPos;
@@ -33,16 +36,10 @@ namespace LethalCompanyMinimap.Component
         private readonly KeyboardShortcut escapeKey = new KeyboardShortcut(KeyCode.Escape);
         private int navbarIndex = 0;
         public bool isGUIOpen = false;
-        private bool guiKeyWasDown = false;
         private bool escKeyWasDown = false;
-        private bool toggleMinimapKeyWasDown = false;
         public int playerIndex = 0;
         public int realPlayerIndex = 0;
         private bool lockPrefix = false;
-        private bool isSettingGUIKey = false;
-        private bool isSettingToggleMinimapKey = false;
-        private bool wasSettingGUIKey = false;
-        private bool wasSettingToggleMinimapKey = false;
         private int extraGUIHeight = 0;
         private CursorLockMode lastCursorState = Cursor.lockState;
 
@@ -55,6 +52,12 @@ namespace LethalCompanyMinimap.Component
         private void Awake()
         {
             MinimapMod.mls.LogInfo("MinimapGUI loaded.");
+
+            guiKey.OnKey = ToggleGUI;
+            toggleMinimapKey.OnKey = () => { enableMinimap = !enableMinimap; };
+
+            hotkeyManager.AllHotkeys[0] = guiKey;
+            hotkeyManager.AllHotkeys[1] = toggleMinimapKey;
         }
 
         private Texture2D MakeTex(int width, int height, Color col)
@@ -72,6 +75,10 @@ namespace LethalCompanyMinimap.Component
 
         public string GetPlayerNameAtIndex(int index)
         {
+            if (StartOfRound.Instance == null)
+            {
+                return "n/a";
+            }
             List<TransformAndName> players = StartOfRound.Instance.mapScreen.radarTargets;
             if (index < 0 || index >= players.Count)
             {
@@ -156,60 +163,35 @@ namespace LethalCompanyMinimap.Component
             return setRadarTargetIndex;
         }
 
+        private void ToggleGUI()
+        {
+            if (!isGUIOpen)
+            {
+                isGUIOpen = true;
+                Cursor.visible = true;
+                lastCursorState = Cursor.lockState;
+                Cursor.lockState = CursorLockMode.Confined;
+            }
+            else
+            {
+                isGUIOpen = false;
+                Cursor.visible = false;
+                Cursor.lockState = lastCursorState;
+            }
+        }
+
         public void Update()
         {
-            // When GUI key is pressed
-            if (guiKey.IsDown() && !guiKeyWasDown)
-            {
-                guiKeyWasDown = true;
-            }
-            // When GUI key is released
-            if (guiKey.IsUp() && guiKeyWasDown)
-            {
-                guiKeyWasDown = false;
-                if (!isGUIOpen)
-                {
-                    isGUIOpen = true;
-                    Cursor.visible = true;
-                    lastCursorState = Cursor.lockState;
-                    Cursor.lockState = CursorLockMode.Confined;
-                }
-                else if (wasSettingGUIKey)
-                {
-                    wasSettingGUIKey = false;
-                }
-                else
-                {
-                    isGUIOpen = false;
-                    Cursor.visible = false;
-                    Cursor.lockState = lastCursorState;
-                }
-            }
-            // When Toggle Minimap key is pressed
-            if (toggleMinimapKey.IsDown() && !toggleMinimapKeyWasDown && !isSettingToggleMinimapKey)
-            {
-                toggleMinimapKeyWasDown = true;
-            }
-            // When Toggle Minimap key is released
-            if (toggleMinimapKey.IsUp() && toggleMinimapKeyWasDown)
-            {
-                toggleMinimapKeyWasDown = false;
-                if (wasSettingToggleMinimapKey)
-                {
-                    wasSettingToggleMinimapKey = false;
-                }
-                else
-                {
-                    enableMinimap = !enableMinimap;
-                }
-            }
+            // Manage hotkeys (handle key being pressed/released)
+            hotkeyManager.Update();
+
             // When ESC key is pressed
             if (escapeKey.IsDown())
             {
                 escKeyWasDown = true;
                 if (isGUIOpen)
                 {
-                    if (wasSettingGUIKey || wasSettingToggleMinimapKey)
+                    if (hotkeyManager.AnyHotkeyWasSettingKey())
                     {
                         Cursor.lockState = CursorLockMode.Confined;
                     }
@@ -220,16 +202,17 @@ namespace LethalCompanyMinimap.Component
                     }
                 }
             }
+
             // When ESC key is released
             if (escapeKey.IsUp() && escKeyWasDown)
             {
                 escKeyWasDown = false;
-                if (wasSettingGUIKey || wasSettingToggleMinimapKey)
+                if (hotkeyManager.AnyHotkeyWasSettingKey())
                 {
-                    wasSettingGUIKey = false;
-                    wasSettingToggleMinimapKey = false;
+                    hotkeyManager.ResetWasSettingKey();
                 }
             }
+
             // Sync Minimap Target with the rest
             if (!freezePlayerIndex && (lockPrefix || playerIndex != realPlayerIndex))
             {
@@ -290,7 +273,7 @@ namespace LethalCompanyMinimap.Component
                         showTerminalCodes = GUI.Toggle(new Rect(guiCenterX, guiYpos + 250, ITEMWIDTH, 30), showTerminalCodes, "Show Terminal Codes", toggleStyle);
                         break;
                     case 2:
-                        List<TransformAndName> players = StartOfRound.Instance.mapScreen.radarTargets;
+                        List<TransformAndName> players = StartOfRound.Instance != null ? StartOfRound.Instance.mapScreen.radarTargets : new List<TransformAndName>();
 
                         GUI.Label(new Rect(guiCenterX, guiYpos + 90, ITEMWIDTH, 30), $"Selected Target: {GetPlayerNameAtIndex(playerIndex)}", labelStyle);
                         freezePlayerIndex = GUI.Toggle(new Rect(guiCenterX, guiYpos + 140, ITEMWIDTH, 30), freezePlayerIndex, "Override Ship Controls", toggleStyle);
@@ -317,44 +300,43 @@ namespace LethalCompanyMinimap.Component
                         extraGUIHeight = buttonCount > 7 ? (buttonCount - 7) * 40 : 0;
                         break;
                     case 3:
-                        string guiKeyButtonLabel = isSettingGUIKey ? "Press a Key..." : $"Open Mod Menu: {guiKey}";
+                        string guiKeyButtonLabel = guiKey.IsSettingKey ? "Press a Key..." : $"Open Mod Menu: {guiKey.Key}";
                         if (GUI.Button(new Rect(guiCenterX, guiYpos + 90, ITEMWIDTH, 30), guiKeyButtonLabel))
                         {
-                            isSettingGUIKey = true;
-                            wasSettingGUIKey = true;
-                            isSettingToggleMinimapKey = false;
-                            wasSettingToggleMinimapKey = false;
+                            hotkeyManager.ResetSettingKey();
+                            guiKey.IsSettingKey = true;
+                            guiKey.WasSettingKey = true;
                         }
-                        string toggleMinimapKeyButtonLabel = isSettingToggleMinimapKey ? "Press a Key..." : $"Toggle Minimap: {toggleMinimapKey}";
+                        string toggleMinimapKeyButtonLabel = toggleMinimapKey.IsSettingKey ? "Press a Key..." : $"Toggle Minimap: {toggleMinimapKey.Key}";
                         if (GUI.Button(new Rect(guiCenterX, guiYpos + 130, ITEMWIDTH, 30), toggleMinimapKeyButtonLabel))
                         {
-                            isSettingGUIKey = false;
-                            wasSettingGUIKey = false;
-                            isSettingToggleMinimapKey = true;
-                            wasSettingToggleMinimapKey = true;
+                            hotkeyManager.ResetSettingKey();
+                            toggleMinimapKey.IsSettingKey = true;
+                            toggleMinimapKey.WasSettingKey = true;
                         }
                         if (GUI.Button(new Rect(guiCenterX, guiYpos + 200, ITEMWIDTH, 30), "Reset to Default Keybinds"))
                         {
-                            guiKey = MinimapMod.defaultGuiKey;
-                            toggleMinimapKey = MinimapMod.defaultToggleMinimapKey;
+                            hotkeyManager.ResetToDefaultKey();
                         }
 
-                        if (isSettingGUIKey || isSettingToggleMinimapKey)
+                        if (hotkeyManager.AnyHotkeyIsSettingKey())
                         {
                             Event e = Event.current;
                             if (e.isKey)
                             {
                                 if (e.keyCode == KeyCode.Escape) { }
-                                else if (isSettingGUIKey)
+                                else
                                 {
-                                    guiKey = new KeyboardShortcut(e.keyCode);
+                                    foreach (ModHotkey hotkey in hotkeyManager.AllHotkeys)
+                                    {
+                                        if (hotkey.IsSettingKey)
+                                        {
+                                            hotkey.Key = new KeyboardShortcut(e.keyCode);
+                                            break;
+                                        }
+                                    }
                                 }
-                                else if (isSettingToggleMinimapKey)
-                                {
-                                    toggleMinimapKey = new KeyboardShortcut(e.keyCode);
-                                }
-                                isSettingGUIKey = false;
-                                isSettingToggleMinimapKey = false;
+                                hotkeyManager.ResetIsSettingKey();
                             }
                         }
                         extraGUIHeight = 0;
