@@ -19,8 +19,13 @@ style="display: block; margin-left: auto; margin-right: auto;" />
 
 # Usage
 
-By default, press `F1` to open the Minimap Mod menu and press `F2` to toggle 
-the Minimap visibility.
+These are the **default hotkeys**:
+- `F1` - open the Minimap Mod menu
+- `F2` - toggle the Minimap visibility
+- `F3` - override the ship controls
+- `F4` - switch the Minimap target (when ship controls are overriden)
+
+**All hotkeys can be easily reconfigured via the Minimap mod menu**
 
 The Minimap size, position, and the hotkeys, can be customized via the mod menu.
 
@@ -44,13 +49,15 @@ mod installed.
 - Customize the Minimap position
 - Switch Minimap focus without affecting other players map
     - or you can have the Minimap linked with the ship's control panel
+- Hotkeys for overriding ship controls and switching Minimap target
 - Customize all hotkeys, including the hotkey to open the mod menu and 
 the hotkey to toggle minimap
 - Easily reset specific (or all) configurable settings
 - All settings configurable via a user-friendly in-game GUI
 - All configurable settings saved across sessions
 - Toggle visibility of different Minimap icons
-    - Loots, Enemies, Players, Terminal Codes, and Radar Boosters
+    - Loots, Enemies, Alived Players, Dead Players, Terminal Codes, and 
+Radar Boosters
 - Informs if the mod is outdated and a newer version is available
 
 ![Minimap GUI](Images/minimap-gui.png)
@@ -85,9 +92,10 @@ Your feedback for improving and optimizing the code is warmly welcomed.
 
 # Contact
 
-I am primarily active on Discord, but my DMs are closed. So the most effective 
-way to get in touch with me is via the 
-[Trilobite Tavern](https://discord.gg/trilobitetavern) Discord Server.
+I am primarily active on Discord, but my **DMs are closed**. So the most 
+effective way to get in touch with me is via the 
+[Trilobite Tavern](https://discord.gg/trilobitetavern) Discord Server's 
+**support ticket** (or just ping me in the **General Chat**).
 
 I serve as a `System Administrator` on that server and am highly active there. 
 I have decided to take this approach as it allows me to keep my focus on mod 
