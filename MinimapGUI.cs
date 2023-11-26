@@ -44,6 +44,7 @@ namespace LethalCompanyMinimap.Component
         private bool lockPrefix = false;
         string prefix = "MONITORING";
         private int extraGUIHeight = 0;
+        private Vector2 scrollPos = Vector2.zero;
         private CursorLockMode lastCursorState = Cursor.lockState;
 
         private GUIStyle menuStyle;
@@ -306,7 +307,7 @@ namespace LethalCompanyMinimap.Component
                         {
                             float baseYpos = guiYpos + 180;
                             PlayerControllerB component;
-
+                            scrollPos = GUI.BeginScrollView(new Rect(guiCenterX, baseYpos, ITEMWIDTH, 300), scrollPos, new Rect(0, 0, ITEMWIDTH - 10, 40 * players.Count));
                             for (int i = 0; i < players.Count; i++)
                             {
                                 component = players[i].transform.gameObject.GetComponent<PlayerControllerB>();
@@ -314,14 +315,14 @@ namespace LethalCompanyMinimap.Component
                                 {
                                     continue;
                                 }
-                                if (GUI.Button(new Rect(guiCenterX, baseYpos + (40 * buttonCount), ITEMWIDTH, 30), players[i].name))
+                                if (GUI.Button(new Rect(0, (40 * buttonCount), ITEMWIDTH - 30, 30), players[i].name))
                                 {
                                     SetMinimapTarget(i);
                                 }
                                 buttonCount += 1;
                             }
+                            GUI.EndScrollView();
                         }
-                        extraGUIHeight = buttonCount > 7 ? (buttonCount - 7) * 40 : 0;
                         break;
                     case 3:
                         string guiKeyButtonLabel = guiKey.IsSettingKey ? "Press a Key..." : $"Open Mod Menu: {guiKey.Key}";
