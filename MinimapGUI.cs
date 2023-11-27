@@ -23,6 +23,7 @@ namespace LethalCompanyMinimap.Component
         public HotkeyManager hotkeyManager = new HotkeyManager(4);
 
         public bool enableMinimap;
+        public bool autoRotate;
         public int minimapSize;
         public float minimapXPos;
         public float minimapYPos;
@@ -269,28 +270,30 @@ namespace LethalCompanyMinimap.Component
                     case 0:
                         enableMinimap = GUI.Toggle(new Rect(guiCenterX, guiYpos + 90, ITEMWIDTH, 30), enableMinimap, "Toggle Minimap", toggleStyle);
 
-                        GUI.Label(new Rect(guiCenterX, guiYpos + 130, ITEMWIDTH, 30), $"Minimap Size: {minimapSize}", labelStyle);
-                        minimapSize = (int)GUI.HorizontalSlider(new Rect(guiCenterX, guiYpos + 160, ITEMWIDTH, 30), minimapSize, 0, 1000);
+                        autoRotate = GUI.Toggle(new Rect(guiCenterX, guiYpos + 130, ITEMWIDTH, 30), autoRotate, "Auto Rotate Map", toggleStyle);
 
-                        GUI.Label(new Rect(guiCenterX, guiYpos + 180, ITEMWIDTH, 30), $"X Offset: {minimapXPos}", labelStyle);
-                        minimapXPos = GUI.HorizontalSlider(new Rect(guiCenterX, guiYpos + 210, ITEMWIDTH, 30), minimapXPos, -1000, 1000);
+                        GUI.Label(new Rect(guiCenterX, guiYpos + 170, ITEMWIDTH, 30), $"Minimap Size: {minimapSize}", labelStyle);
+                        minimapSize = (int)GUI.HorizontalSlider(new Rect(guiCenterX, guiYpos + 200, ITEMWIDTH, 30), minimapSize, 0, 1000);
 
-                        GUI.Label(new Rect(guiCenterX, guiYpos + 230, ITEMWIDTH, 30), $"Y Offset: {minimapYPos}", labelStyle);
-                        minimapYPos = GUI.HorizontalSlider(new Rect(guiCenterX, guiYpos + 260, ITEMWIDTH, 30), minimapYPos, -1000, 1000);
+                        GUI.Label(new Rect(guiCenterX, guiYpos + 220, ITEMWIDTH, 30), $"X Offset: {minimapXPos}", labelStyle);
+                        minimapXPos = GUI.HorizontalSlider(new Rect(guiCenterX, guiYpos + 250, ITEMWIDTH, 30), minimapXPos, -1000, 1000);
 
-                        GUI.Label(new Rect(guiCenterX, guiYpos + 280, ITEMWIDTH, 30), $"Map Zoom: {minimapZoom}", labelStyle);
-                        minimapZoom = GUI.HorizontalSlider(new Rect(guiCenterX, guiYpos + 310, ITEMWIDTH, 30), minimapZoom, 0, 100);
+                        GUI.Label(new Rect(guiCenterX, guiYpos + 270, ITEMWIDTH, 30), $"Y Offset: {minimapYPos}", labelStyle);
+                        minimapYPos = GUI.HorizontalSlider(new Rect(guiCenterX, guiYpos + 300, ITEMWIDTH, 30), minimapYPos, -1000, 1000);
 
-                        if (GUI.Button(new Rect(guiCenterX, guiYpos + 350, ITEMWIDTH, 30), "Reset to Default Size"))
+                        GUI.Label(new Rect(guiCenterX, guiYpos + 320, ITEMWIDTH, 30), $"Map Zoom: {minimapZoom}", labelStyle);
+                        minimapZoom = GUI.HorizontalSlider(new Rect(guiCenterX, guiYpos + 350, ITEMWIDTH, 30), minimapZoom, 0, 100);
+
+                        if (GUI.Button(new Rect(guiCenterX, guiYpos + 390, ITEMWIDTH, 30), "Reset to Default Size"))
                         {
                             minimapSize = 200;
                         }
-                        if (GUI.Button(new Rect(guiCenterX, guiYpos + 390, ITEMWIDTH, 30), "Reset to Default Position"))
+                        if (GUI.Button(new Rect(guiCenterX, guiYpos + 430, ITEMWIDTH, 30), "Reset to Default Position"))
                         {
                             minimapXPos = 0;
                             minimapYPos = 0;
                         }
-                        if (GUI.Button(new Rect(guiCenterX, guiYpos + 430, ITEMWIDTH, 30), "Reset to Default Zoom"))
+                        if (GUI.Button(new Rect(guiCenterX, guiYpos + 470, ITEMWIDTH, 30), "Reset to Default Zoom"))
                         {
                             minimapZoom = MinimapMod.defaultMapZoom;
                         }

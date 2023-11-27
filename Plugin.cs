@@ -36,9 +36,11 @@ namespace LethalCompanyMinimap
         private static ConfigEntry<KeyboardShortcut> toggleOverrideKeyConfig;
         private static ConfigEntry<KeyboardShortcut> switchTargetKeyConfig;
         private static ConfigEntry<bool> enableMinimapConfig;
+        private static ConfigEntry<bool> autoRotateConfig;
         private static ConfigEntry<int> minimapSizeConfig;
         private static ConfigEntry<float> minimapXPosConfig;
         private static ConfigEntry<float> minimapYPosConfig;
+        private static ConfigEntry<float> minimapZoomConfig;
         private static ConfigEntry<bool> showLootsConfig;
         private static ConfigEntry<bool> showEnemiesConfig;
         private static ConfigEntry<bool> showPlayersConfig;
@@ -97,6 +99,7 @@ namespace LethalCompanyMinimap
             toggleOverrideKeyConfig = Config.Bind("Hotkeys", "Toggle Override Ship", defaultToggleOverrideKey, "Hotkey to toggle the override ship controls");
             switchTargetKeyConfig = Config.Bind("Hotkeys", "Switch Minimap Focus", defaultSwitchTargetKey, "Hotkey to switch the Minimap focus");
             enableMinimapConfig = Config.Bind("Basic Settings", "Enable Minimap", true, "Toggles visibility of your Minimap");
+            autoRotateConfig = Config.Bind("Basic Settings", "Auto Rotate", true, "Auto-rotate the Map based on where you are facing");
             minimapSizeConfig = Config.Bind("Basic Settings", "Minimap Size", defaultMinimapSize, "Adjusts the size of your Minimap");
             minimapXPosConfig = Config.Bind("Basic Settings", "X Offset", defaultXoffset, "Shifts the Minimap position horizontally");
             minimapYPosConfig = Config.Bind("Basic Settings", "Y Offset", defaultYoffset, "Shifts the Minimap position vertically");
@@ -117,6 +120,7 @@ namespace LethalCompanyMinimap
             minimapGUI.toggleOverrideKey.Key = toggleOverrideKeyConfig.Value;
             minimapGUI.switchTargetKey.Key = switchTargetKeyConfig.Value;
             minimapGUI.enableMinimap = enableMinimapConfig.Value;
+            minimapGUI.autoRotate = autoRotateConfig.Value;
             minimapGUI.minimapSize = minimapSizeConfig.Value;
             minimapGUI.minimapXPos = minimapXPosConfig.Value;
             minimapGUI.minimapYPos = minimapYPosConfig.Value;
@@ -137,6 +141,7 @@ namespace LethalCompanyMinimap
             toggleOverrideKeyConfig.Value = minimapGUI.toggleOverrideKey.Key;
             switchTargetKeyConfig.Value = minimapGUI.switchTargetKey.Key;
             enableMinimapConfig.Value = minimapGUI.enableMinimap;
+            autoRotateConfig.Value = minimapGUI.autoRotate;
             minimapSizeConfig.Value = minimapGUI.minimapSize;
             minimapXPosConfig.Value = minimapGUI.minimapXPos;
             minimapYPosConfig.Value = minimapGUI.minimapYPos;

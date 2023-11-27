@@ -11,15 +11,35 @@ namespace LethalCompanyMinimap.Patches
     [HarmonyPatch(typeof(ManualCameraRenderer))]
     internal class ManualCameraRendererPatch
     {
+        private static Vector3 defaultEulerAngles = new Vector3(90, 315, 0);
 
         [HarmonyPatch("Update")]
         [HarmonyPostfix]
         static void MapCameraAlwaysEnabledPatch(ref Camera ___mapCamera)
         {
-            // Ensure that the Map camera is always being updated even when outside the ship
             if (___mapCamera != null)
             {
+                // Ensure that the Map camera is always being updated even when outside the ship
                 ___mapCamera.enabled = true;
+
+                // Adjust the Minimap Zoom level based on user's Minimap settings
+                if (___mapCamera.orthographicSize != MinimapMod.minimapGUI.minimapZoom)
+                {
+                    ___mapCamera.orthographicSize = MinimapMod.minimapGUI.minimapZoom;
+                }
+
+                // Sync the Minimap rotation with where player is facing if auto-rotate is on
+                if (MinimapMod.minimapGUI.autoRotate)
+                {
+                    ___mapCamera.transform.eulerAngles = new Vector3(
+                        defaultEulerAngles.x,
+                        GameNetworkManager.Instance.localPlayerController.transform.eulerAngles.y,
+                        defaultEulerAngles.z
+                    );
+                } else if (___mapCamera.transform.eulerAngles != defaultEulerAngles)
+                {
+                    ___mapCamera.transform.eulerAngles = defaultEulerAngles;
+                }
             }
         }
 
@@ -37,17 +57,6 @@ namespace LethalCompanyMinimap.Patches
             }
             MinimapMod.minimapGUI.playerIndex = ___targetTransformIndex;
             return true;
-        }
-
-        [HarmonyPatch("MapCameraFocusOnPosition")]
-        [HarmonyPostfix]
-        static void MinimapZoomPatch(ref Camera ___mapCamera)
-        {
-            // Adjust the Minimap Zoom level based on user's Minimap settings
-            if (___mapCamera != null && ___mapCamera.orthographicSize != MinimapMod.minimapGUI.minimapZoom)
-            {
-                ___mapCamera.orthographicSize = MinimapMod.minimapGUI.minimapZoom;
-            }
         }
 
     }
