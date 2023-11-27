@@ -39,5 +39,16 @@ namespace LethalCompanyMinimap.Patches
             return true;
         }
 
+        [HarmonyPatch("MapCameraFocusOnPosition")]
+        [HarmonyPostfix]
+        static void MinimapZoomPatch(ref Camera ___mapCamera)
+        {
+            // Adjust the Minimap Zoom level based on user's Minimap settings
+            if (___mapCamera != null && ___mapCamera.orthographicSize != MinimapMod.minimapGUI.minimapZoom)
+            {
+                ___mapCamera.orthographicSize = MinimapMod.minimapGUI.minimapZoom;
+            }
+        }
+
     }
 }

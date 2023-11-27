@@ -18,7 +18,7 @@ namespace LethalCompanyMinimap
     {
         public const string modGUID = "LethalCompanyMinimap";
         public const string modName = "Minimap";
-        public const string modVersion = "1.0.3";
+        public const string modVersion = "1.0.4";
         public const string modAuthor = "Tyzeron";
         public const string modRepository = "tyzeron/LethalCompanyMinimap";
 
@@ -29,6 +29,7 @@ namespace LethalCompanyMinimap
         public const int defaultMinimapSize = 200;
         public const float defaultXoffset = 0f;
         public const float defaultYoffset = 0f;
+        public const float defaultMapZoom = 19.7f;
 
         private static ConfigEntry<KeyboardShortcut> guiKeyConfig;
         private static ConfigEntry<KeyboardShortcut> toggleMinimapKeyConfig;
@@ -99,6 +100,7 @@ namespace LethalCompanyMinimap
             minimapSizeConfig = Config.Bind("Basic Settings", "Minimap Size", defaultMinimapSize, "Adjusts the size of your Minimap");
             minimapXPosConfig = Config.Bind("Basic Settings", "X Offset", defaultXoffset, "Shifts the Minimap position horizontally");
             minimapYPosConfig = Config.Bind("Basic Settings", "Y Offset", defaultYoffset, "Shifts the Minimap position vertically");
+            minimapZoomConfig = Config.Bind("Basic Settings", "Map Zoom", defaultMapZoom, "Adjust the Map zoom level");
             showLootsConfig = Config.Bind("Minimap Icons", "Show Loots", true, "Toggles visibility of loots (small triangles) on your Minimap");
             showEnemiesConfig = Config.Bind("Minimap Icons", "Show Enemies", true, "Toggles visibility of enemies (red circles) on your Minimap");
             showPlayersConfig = Config.Bind("Minimap Icons", "Show Players", true, "Toggles visibility of players (cyan circles) on your Minimap");
@@ -118,6 +120,7 @@ namespace LethalCompanyMinimap
             minimapGUI.minimapSize = minimapSizeConfig.Value;
             minimapGUI.minimapXPos = minimapXPosConfig.Value;
             minimapGUI.minimapYPos = minimapYPosConfig.Value;
+            minimapGUI.minimapZoom = minimapZoomConfig.Value;
             minimapGUI.showLoots = showLootsConfig.Value;
             minimapGUI.showEnemies = showEnemiesConfig.Value;
             minimapGUI.showPlayers = showPlayersConfig.Value;
@@ -137,6 +140,7 @@ namespace LethalCompanyMinimap
             minimapSizeConfig.Value = minimapGUI.minimapSize;
             minimapXPosConfig.Value = minimapGUI.minimapXPos;
             minimapYPosConfig.Value = minimapGUI.minimapYPos;
+            minimapZoomConfig.Value = minimapGUI.minimapZoom;
             showLootsConfig.Value = minimapGUI.showLoots;
             showEnemiesConfig.Value = minimapGUI.showEnemies;
             showPlayersConfig.Value = minimapGUI.showPlayers;

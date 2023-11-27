@@ -13,7 +13,7 @@ namespace LethalCompanyMinimap.Component
     public class MinimapGUI : MonoBehaviour
     {
         private const int GUI_WIDTH = 500;
-        private const int GUI_HEIGHT = 500;
+        private const int GUI_HEIGHT = 550;
         private const int ITEMWIDTH = 300;
 
         public ModHotkey guiKey = new ModHotkey(MinimapMod.defaultGuiKey, null);
@@ -26,6 +26,7 @@ namespace LethalCompanyMinimap.Component
         public int minimapSize;
         public float minimapXPos;
         public float minimapYPos;
+        public float minimapZoom;
         public bool showLoots;
         public bool showEnemies;
         public bool showPlayers;
@@ -277,14 +278,21 @@ namespace LethalCompanyMinimap.Component
                         GUI.Label(new Rect(guiCenterX, guiYpos + 230, ITEMWIDTH, 30), $"Y Offset: {minimapYPos}", labelStyle);
                         minimapYPos = GUI.HorizontalSlider(new Rect(guiCenterX, guiYpos + 260, ITEMWIDTH, 30), minimapYPos, -1000, 1000);
 
-                        if (GUI.Button(new Rect(guiCenterX, guiYpos + 300, ITEMWIDTH, 30), "Reset to Default Size"))
+                        GUI.Label(new Rect(guiCenterX, guiYpos + 280, ITEMWIDTH, 30), $"Map Zoom: {minimapZoom}", labelStyle);
+                        minimapZoom = GUI.HorizontalSlider(new Rect(guiCenterX, guiYpos + 310, ITEMWIDTH, 30), minimapZoom, 0, 100);
+
+                        if (GUI.Button(new Rect(guiCenterX, guiYpos + 350, ITEMWIDTH, 30), "Reset to Default Size"))
                         {
                             minimapSize = 200;
                         }
-                        if (GUI.Button(new Rect(guiCenterX, guiYpos + 340, ITEMWIDTH, 30), "Reset to Default Position"))
+                        if (GUI.Button(new Rect(guiCenterX, guiYpos + 390, ITEMWIDTH, 30), "Reset to Default Position"))
                         {
                             minimapXPos = 0;
                             minimapYPos = 0;
+                        }
+                        if (GUI.Button(new Rect(guiCenterX, guiYpos + 430, ITEMWIDTH, 30), "Reset to Default Zoom"))
+                        {
+                            minimapZoom = MinimapMod.defaultMapZoom;
                         }
                         extraGUIHeight = 0;
                         break;
