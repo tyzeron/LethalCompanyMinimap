@@ -45,8 +45,9 @@ namespace LethalCompanyMinimap.Component
         public int realPlayerIndex = 0;
         private bool lockPrefix = false;
         string prefix = "MONITORING";
-        private int extraGUIHeight = 0;
         private CursorLockMode lastCursorState = Cursor.lockState;
+        private Vector2 scrollPos = Vector2.zero;
+        private int validTargetCount = 0;
 
         private GUIStyle menuStyle;
         private GUIStyle buttonStyle;
@@ -259,7 +260,7 @@ namespace LethalCompanyMinimap.Component
                 float guiYpos = (Screen.height / 2) - (GUI_HEIGHT / 2);
                 float guiCenterX = guiXpos + ((GUI_WIDTH / 2) - (ITEMWIDTH / 2));
 
-                GUI.Box(new Rect(guiXpos, guiYpos, GUI_WIDTH, GUI_HEIGHT + extraGUIHeight), $"\n{MinimapMod.modName} Mod\n", menuStyle);
+                GUI.Box(new Rect(guiXpos, guiYpos, GUI_WIDTH, GUI_HEIGHT), $"\n{MinimapMod.modName} Mod\n", menuStyle);
                 GUI.Label(new Rect(guiCenterX, guiYpos + 60, ITEMWIDTH, 30), $"v{MinimapMod.modVersion}\t\t\tby {MinimapMod.modAuthor}", tinyLabelStyle);
                 navbarIndex = GUI.Toolbar(new Rect(guiXpos, guiYpos - 30, GUI_WIDTH, 30), navbarIndex, navbarStr, buttonStyle);
 
@@ -297,7 +298,6 @@ namespace LethalCompanyMinimap.Component
                         {
                             minimapZoom = MinimapMod.defaultMapZoom;
                         }
-                        extraGUIHeight = 0;
                         break;
                     case 1:
                         showLoots = GUI.Toggle(new Rect(guiCenterX, guiYpos + 90, ITEMWIDTH, 30), showLoots, "Show Loots", toggleStyle);
@@ -317,6 +317,7 @@ namespace LethalCompanyMinimap.Component
                         {
                             float baseYpos = guiYpos + 180;
                             PlayerControllerB component;
+                            scrollPos = GUI.BeginScrollView(new Rect(guiCenterX, baseYpos, ITEMWIDTH, 300), scrollPos, new Rect(0, 0, ITEMWIDTH - 20, 40 * validTargetCount));
 
                             for (int i = 0; i < players.Count; i++)
                             {
@@ -325,14 +326,15 @@ namespace LethalCompanyMinimap.Component
                                 {
                                     continue;
                                 }
-                                if (GUI.Button(new Rect(guiCenterX, baseYpos + (40 * buttonCount), ITEMWIDTH, 30), players[i].name))
+                                if (GUI.Button(new Rect(0, (40 * buttonCount), ITEMWIDTH - 30, 30), players[i].name))
                                 {
                                     SetMinimapTarget(i);
                                 }
                                 buttonCount += 1;
                             }
+                            GUI.EndScrollView();
                         }
-                        extraGUIHeight = buttonCount > 7 ? (buttonCount - 7) * 40 : 0;
+                        validTargetCount = buttonCount;
                         break;
                     case 3:
                         string guiKeyButtonLabel = guiKey.IsSettingKey ? "Press a Key..." : $"Open Mod Menu: {guiKey.Key}";
@@ -388,7 +390,6 @@ namespace LethalCompanyMinimap.Component
                                 hotkeyManager.ResetIsSettingKey();
                             }
                         }
-                        extraGUIHeight = 0;
                         break;
                 }
 
