@@ -3,51 +3,50 @@
 // Licensed under the GNU Affero General Public License, Version 3
 // ----------------------------------------------------------------------
 
-using BepInEx.Configuration;
-using DunGen;
 using System;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 
 namespace LethalCompanyMinimap
 {
     public class ModHotkey
     {
-        public KeyboardShortcut DefaultKey { get; set; }
-        public KeyboardShortcut Key { get; set; }
+        public Key DefaultKey { get; set; }
+        public Key Key { get; set; }
         public bool KeyWasDown { get; set; }
         public bool IsSettingKey { get; set; }
-        public bool WasSettingKey { get; set; }
         public Action OnKey { get; set; }
 
-        public ModHotkey(KeyboardShortcut defaultKey, Action onKey)
+        public ModHotkey(Key defaultKey, Action onKey)
         {
             DefaultKey = defaultKey;
             Key = defaultKey;
             KeyWasDown = false;
             IsSettingKey = false;
-            WasSettingKey = false;
             OnKey = onKey;
         }
 
         public void Update()
         {
+            // Get Keyboard
+            Keyboard keyboard = Keyboard.current;
+            if (keyboard == null)
+            {
+                return;
+            }
+            KeyControl keyControl = keyboard[Key];
+
             // When key is pressed
-            if (Key.IsDown() && !KeyWasDown && !IsSettingKey)
+            if (keyControl.wasPressedThisFrame && !KeyWasDown && !IsSettingKey)
             {
                 KeyWasDown = true;
             }
 
             // When key is released
-            if (Key.IsUp() && KeyWasDown)
+            if (keyControl.wasReleasedThisFrame && KeyWasDown)
             {
                 KeyWasDown = false;
-                if (WasSettingKey)
-                {
-                    WasSettingKey = false;
-                }
-                else
-                {
-                    OnKey?.Invoke();
-                }
+                OnKey?.Invoke();
             }
         }
     }
@@ -73,12 +72,14 @@ namespace LethalCompanyMinimap
             return false;
         }
 
-        public bool AnyHotkeyWasSettingKey()
+        public bool SetHotKey(Key key)
         {
             foreach (ModHotkey hotkey in AllHotkeys)
             {
-                if (hotkey.WasSettingKey)
+                if (hotkey.IsSettingKey)
                 {
+                    hotkey.Key = key;
+                    ResetIsSettingKey();
                     return true;
                 }
             }
@@ -93,20 +94,11 @@ namespace LethalCompanyMinimap
             }
         }
 
-        public void ResetWasSettingKey()
-        {
-            foreach (ModHotkey hotkey in AllHotkeys)
-            {
-                hotkey.WasSettingKey = false;
-            }
-        }
-
         public void ResetSettingKey()
         {
             foreach (ModHotkey hotkey in AllHotkeys)
             {
                 hotkey.IsSettingKey = false;
-                hotkey.WasSettingKey = false;
             }
         }
 

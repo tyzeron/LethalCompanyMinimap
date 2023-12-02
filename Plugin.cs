@@ -10,6 +10,7 @@ using HarmonyLib;
 using LethalCompanyMinimap.Component;
 using LethalCompanyMinimap.Patches;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace LethalCompanyMinimap
 {
@@ -22,19 +23,19 @@ namespace LethalCompanyMinimap
         public const string modAuthor = "Tyzeron";
         public const string modRepository = "tyzeron/LethalCompanyMinimap";
 
-        public static KeyboardShortcut defaultGuiKey = new KeyboardShortcut(KeyCode.F1);
-        public static KeyboardShortcut defaultToggleMinimapKey = new KeyboardShortcut(KeyCode.F2);
-        public static KeyboardShortcut defaultToggleOverrideKey = new KeyboardShortcut(KeyCode.F3);
-        public static KeyboardShortcut defaultSwitchTargetKey = new KeyboardShortcut(KeyCode.F4);
+        public static Key defaultGuiKey = Key.F1;
+        public static Key defaultToggleMinimapKey = Key.F2;
+        public static Key defaultToggleOverrideKey = Key.F3;
+        public static Key defaultSwitchTargetKey = Key.F4;
         public const int defaultMinimapSize = 200;
         public const float defaultXoffset = 0f;
         public const float defaultYoffset = 0f;
         public const float defaultMapZoom = 19.7f;
 
-        private static ConfigEntry<KeyboardShortcut> guiKeyConfig;
-        private static ConfigEntry<KeyboardShortcut> toggleMinimapKeyConfig;
-        private static ConfigEntry<KeyboardShortcut> toggleOverrideKeyConfig;
-        private static ConfigEntry<KeyboardShortcut> switchTargetKeyConfig;
+        private static ConfigEntry<Key> guiKeyConfig;
+        private static ConfigEntry<Key> toggleMinimapKeyConfig;
+        private static ConfigEntry<Key> toggleOverrideKeyConfig;
+        private static ConfigEntry<Key> switchTargetKeyConfig;
         private static ConfigEntry<bool> enableMinimapConfig;
         private static ConfigEntry<bool> autoRotateConfig;
         private static ConfigEntry<int> minimapSizeConfig;

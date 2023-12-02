@@ -7,6 +7,8 @@ using BepInEx.Configuration;
 using GameNetcodeStuff;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 
 namespace LethalCompanyMinimap.Component
 {
@@ -206,7 +208,7 @@ namespace LethalCompanyMinimap.Component
                 escKeyWasDown = true;
                 if (isGUIOpen)
                 {
-                    if (hotkeyManager.AnyHotkeyWasSettingKey())
+                    if (hotkeyManager.AnyHotkeyIsSettingKey())
                     {
                         Cursor.lockState = CursorLockMode.Confined;
                     }
@@ -222,10 +224,6 @@ namespace LethalCompanyMinimap.Component
             if (escapeKey.IsUp() && escKeyWasDown)
             {
                 escKeyWasDown = false;
-                if (hotkeyManager.AnyHotkeyWasSettingKey())
-                {
-                    hotkeyManager.ResetWasSettingKey();
-                }
             }
 
             // Update the text prefix
@@ -342,52 +340,45 @@ namespace LethalCompanyMinimap.Component
                         {
                             hotkeyManager.ResetSettingKey();
                             guiKey.IsSettingKey = true;
-                            guiKey.WasSettingKey = true;
                         }
                         string toggleMinimapKeyButtonLabel = toggleMinimapKey.IsSettingKey ? "Press a Key..." : $"Toggle Minimap: {toggleMinimapKey.Key}";
                         if (GUI.Button(new Rect(guiCenterX, guiYpos + 130, ITEMWIDTH, 30), toggleMinimapKeyButtonLabel))
                         {
                             hotkeyManager.ResetSettingKey();
                             toggleMinimapKey.IsSettingKey = true;
-                            toggleMinimapKey.WasSettingKey = true;
                         }
                         string toggleOverrideKeyButtonLabel = toggleOverrideKey.IsSettingKey ? "Press a Key..." : $"Override Ship Controls: {toggleOverrideKey.Key}";
                         if (GUI.Button(new Rect(guiCenterX, guiYpos + 170, ITEMWIDTH, 30), toggleOverrideKeyButtonLabel))
                         {
                             hotkeyManager.ResetSettingKey();
                             toggleOverrideKey.IsSettingKey = true;
-                            toggleOverrideKey.WasSettingKey = true;
                         }
                         string switchTargetKeyButtonLabel = switchTargetKey.IsSettingKey ? "Press a Key..." : $"Switch Minimap Target: {switchTargetKey.Key}";
                         if (GUI.Button(new Rect(guiCenterX, guiYpos + 210, ITEMWIDTH, 30), switchTargetKeyButtonLabel))
                         {
                             hotkeyManager.ResetSettingKey();
                             switchTargetKey.IsSettingKey = true;
-                            switchTargetKey.WasSettingKey = true;
                         }
                         if (GUI.Button(new Rect(guiCenterX, guiYpos + 280, ITEMWIDTH, 30), "Reset to Default Keybinds"))
                         {
                             hotkeyManager.ResetToDefaultKey();
                         }
 
-                        if (hotkeyManager.AnyHotkeyIsSettingKey())
+                        if (hotkeyManager.AnyHotkeyIsSettingKey() && Keyboard.current.anyKey.wasPressedThisFrame)
                         {
-                            Event e = Event.current;
-                            if (e.isKey)
+                            if (Keyboard.current.escapeKey.wasPressedThisFrame)
                             {
-                                if (e.keyCode == KeyCode.Escape) { }
-                                else
+                                hotkeyManager.ResetIsSettingKey();
+                            }
+                            else
+                            {
+                                foreach (KeyControl keyControl in Keyboard.current.allKeys)
                                 {
-                                    foreach (ModHotkey hotkey in hotkeyManager.AllHotkeys)
+                                    if (keyControl.wasPressedThisFrame && hotkeyManager.SetHotKey(keyControl.keyCode))
                                     {
-                                        if (hotkey.IsSettingKey)
-                                        {
-                                            hotkey.Key = new KeyboardShortcut(e.keyCode);
-                                            break;
-                                        }
+                                        break;
                                     }
                                 }
-                                hotkeyManager.ResetIsSettingKey();
                             }
                         }
                         break;
