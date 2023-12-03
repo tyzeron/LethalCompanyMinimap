@@ -23,9 +23,9 @@ These are the **default hotkeys**:
 - `F1` - open the Minimap Mod menu
 - `F2` - toggle the Minimap visibility
 - `F3` - override the ship controls
-- `F4` - switch the Minimap target (when ship controls are overriden)
+- `F4` - switch the Minimap target (when ship controls are overridden)
 
-**All hotkeys can be easily reconfigured via the Minimap mod menu**
+**All hotkeys can be easily reconfigured via the Minimap mod menu.**
 
 The Minimap size, position, and the hotkeys, can be customized via the mod menu.
 
@@ -45,13 +45,20 @@ mod installed.
 
 - Minimap that can be toggled on and off
     - You can toggle the Minimap via a configurable hotkey
-- Customize the Minimap size
-- Customize the Minimap position
+- Auto-rotate the Minimap based on where the player is looking at
+    - You can turn this feature on and off via the mod menu
+- Customize all aspect of the Minimap:
+    - the Minimap size
+    - the Minimap position
+    - the Minimap zoom level
+    - the Minimap brightness
 - Switch Minimap focus without affecting other players map
     - or you can have the Minimap linked with the ship's control panel
-- Hotkeys for overriding ship controls and switching Minimap target
-- Customize all hotkeys, including the hotkey to open the mod menu and 
-the hotkey to toggle minimap
+- Customize all the available hotkeys via a user-friendly GUI:
+    - Hotkey for opening the mod menu
+    - Hotkey for toggling the Minimap
+    - Hotkey for overriding ship controls
+    - Hotkey for switching Minimap target
 - Easily reset specific (or all) configurable settings
 - All settings configurable via a user-friendly in-game GUI
 - All configurable settings saved across sessions
@@ -73,7 +80,7 @@ Radar Boosters
     - The `BepInEx` and `plugins` folder should have been generated in the previous step
     - **Example:** `C:\Program Files\Steam\steamapps\common\Lethal Company\BepInEx\plugins`
 
-4. Download the Minimap mod from the [Thunderstore](https://thunderstore.io/c/lethal-company/p/Tyzeron/Minimap/)
+4. Download the Minimap mod from the [Nexus Mods](https://www.nexusmods.com/lethalcompany/mods/18) or the [Thunderstore](https://thunderstore.io/c/lethal-company/p/Tyzeron/Minimap/)
 
 5. Copy the downloaded **DLL file** (ex. `Minimap-v1.x.x.dll`) to the `plugins` folder
 
