@@ -81,5 +81,17 @@ namespace LethalCompanyMinimap.Patches
             }
         }
 
+        [HarmonyPatch(nameof(ManualCameraRenderer.SwitchRadarTargetForward))]
+        [HarmonyPrefix]
+        static bool DontSwitchTargetForwardPatch()
+        {
+            // Dont switch radar target if freezePlayerIndex setting is True
+            if (MinimapMod.minimapGUI.freezePlayerIndex == true)
+            {
+                return false;
+            }
+            return true;
+        }
+
     }
 }
