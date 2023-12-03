@@ -100,7 +100,7 @@ namespace LethalCompanyMinimap.Component
             return players[index].name;
         }
 
-        public void SetMinimapTarget(int targetTransformIndex, bool lockOn = true)
+        public void SetMinimapTarget(int targetTransformIndex)
         {
             playerIndex = targetTransformIndex;
             StartOfRound.Instance.mapScreen.targetTransformIndex = playerIndex;
@@ -169,7 +169,7 @@ namespace LethalCompanyMinimap.Component
             return setRadarTargetIndex;
         }
 
-        private void SwitchTarget()
+        public void SwitchTarget()
         {
             List<TransformAndName> players = StartOfRound.Instance != null ? StartOfRound.Instance.mapScreen.radarTargets : new List<TransformAndName>();
             if (!freezePlayerIndex || players.Count < 1)
@@ -242,7 +242,7 @@ namespace LethalCompanyMinimap.Component
             if (!freezePlayerIndex && (playerIndex != realPlayerIndex))
             {
                 realPlayerIndex = CalculateValidTargetIndex(realPlayerIndex);
-                SetMinimapTarget(realPlayerIndex, false);
+                SetMinimapTarget(realPlayerIndex);
             }
         }
 

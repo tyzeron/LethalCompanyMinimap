@@ -4,6 +4,7 @@
 // ----------------------------------------------------------------------
 
 using HarmonyLib;
+using System.Collections;
 using UnityEngine;
 
 namespace LethalCompanyMinimap.Patches
@@ -31,12 +32,16 @@ namespace LethalCompanyMinimap.Patches
                 // Sync the Minimap rotation with where player is facing if auto-rotate is on
                 if (MinimapMod.minimapGUI.autoRotate)
                 {
-                    ___mapCamera.transform.eulerAngles = new Vector3(
-                        defaultEulerAngles.x,
-                        GameNetworkManager.Instance.localPlayerController.transform.eulerAngles.y,
-                        defaultEulerAngles.z
-                    );
-                } else if (___mapCamera.transform.eulerAngles != defaultEulerAngles)
+                    if (GameNetworkManager.Instance.localPlayerController != null)
+                    {
+                        ___mapCamera.transform.eulerAngles = new Vector3(
+                            defaultEulerAngles.x,
+                            GameNetworkManager.Instance.localPlayerController.transform.eulerAngles.y,
+                            defaultEulerAngles.z
+                        );
+                    }
+                }
+                else if (___mapCamera.transform.eulerAngles != defaultEulerAngles)
                 {
                     ___mapCamera.transform.eulerAngles = defaultEulerAngles;
                 }
@@ -45,7 +50,7 @@ namespace LethalCompanyMinimap.Patches
 
         [HarmonyPatch("updateMapTarget")]
         [HarmonyPrefix]
-        static bool RadarMapTargetPatch(int setRadarTargetIndex, ref int ___targetTransformIndex)
+        static bool RadarMapSwitchTargetPatch(int setRadarTargetIndex, ref int ___targetTransformIndex, ref IEnumerator __result)
         {
             MinimapMod.minimapGUI.realPlayerIndex = setRadarTargetIndex;
 
@@ -53,10 +58,27 @@ namespace LethalCompanyMinimap.Patches
             if (MinimapMod.minimapGUI.freezePlayerIndex == true)
             {
                 MinimapMod.minimapGUI.SetMinimapTarget(MinimapMod.minimapGUI.playerIndex);
+                __result = DoNothingCoroutine();
                 return false;
             }
             MinimapMod.minimapGUI.playerIndex = ___targetTransformIndex;
             return true;
+        }
+
+        private static IEnumerator DoNothingCoroutine()
+        {
+            yield break;
+        }
+
+        [HarmonyPatch(nameof(ManualCameraRenderer.RemoveTargetFromRadar))]
+        [HarmonyPostfix]
+        static void RemoveTargetFromMapPatch()
+        {
+            // We need to manually switch to next target because of our RadarMapSwitchTargetPatch
+            if (MinimapMod.minimapGUI.freezePlayerIndex == true)
+            {
+                MinimapMod.minimapGUI.SwitchTarget();
+            }
         }
 
     }
