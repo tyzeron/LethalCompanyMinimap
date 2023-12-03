@@ -15,7 +15,7 @@ namespace LethalCompanyMinimap.Component
     public class MinimapGUI : MonoBehaviour
     {
         private const int GUI_WIDTH = 500;
-        private const int GUI_HEIGHT = 550;
+        private const int GUI_HEIGHT = 650;
         private const int ITEMWIDTH = 300;
 
         public ModHotkey guiKey = new ModHotkey(MinimapMod.defaultGuiKey, null);
@@ -30,6 +30,7 @@ namespace LethalCompanyMinimap.Component
         public float minimapXPos;
         public float minimapYPos;
         public float minimapZoom;
+        public float brightness;
         public bool showLoots;
         public bool showEnemies;
         public bool showPlayers;
@@ -283,18 +284,25 @@ namespace LethalCompanyMinimap.Component
                         GUI.Label(new Rect(guiCenterX, guiYpos + 320, ITEMWIDTH, 30), $"Map Zoom: {minimapZoom}", labelStyle);
                         minimapZoom = GUI.HorizontalSlider(new Rect(guiCenterX, guiYpos + 350, ITEMWIDTH, 30), minimapZoom, 0, 100);
 
-                        if (GUI.Button(new Rect(guiCenterX, guiYpos + 390, ITEMWIDTH, 30), "Reset to Default Size"))
+                        GUI.Label(new Rect(guiCenterX, guiYpos + 370, ITEMWIDTH, 30), $"Brightness: {brightness}", labelStyle);
+                        brightness = GUI.HorizontalSlider(new Rect(guiCenterX, guiYpos + 400, ITEMWIDTH, 30), brightness, 0, 16);
+
+                        if (GUI.Button(new Rect(guiCenterX, guiYpos + 440, ITEMWIDTH, 30), "Reset to Default Size"))
                         {
                             minimapSize = 200;
                         }
-                        if (GUI.Button(new Rect(guiCenterX, guiYpos + 430, ITEMWIDTH, 30), "Reset to Default Position"))
+                        if (GUI.Button(new Rect(guiCenterX, guiYpos + 480, ITEMWIDTH, 30), "Reset to Default Position"))
                         {
                             minimapXPos = 0;
                             minimapYPos = 0;
                         }
-                        if (GUI.Button(new Rect(guiCenterX, guiYpos + 470, ITEMWIDTH, 30), "Reset to Default Zoom"))
+                        if (GUI.Button(new Rect(guiCenterX, guiYpos + 520, ITEMWIDTH, 30), "Reset to Default Zoom"))
                         {
                             minimapZoom = MinimapMod.defaultMapZoom;
+                        }
+                        if (GUI.Button(new Rect(guiCenterX, guiYpos + 560, ITEMWIDTH, 30), "Reset to Default Brightness"))
+                        {
+                            brightness = MinimapMod.defaultBrightness;
                         }
                         break;
                     case 1:
@@ -315,7 +323,7 @@ namespace LethalCompanyMinimap.Component
                         {
                             float baseYpos = guiYpos + 180;
                             PlayerControllerB component;
-                            scrollPos = GUI.BeginScrollView(new Rect(guiCenterX, baseYpos, ITEMWIDTH, 300), scrollPos, new Rect(0, 0, ITEMWIDTH - 20, 40 * validTargetCount));
+                            scrollPos = GUI.BeginScrollView(new Rect(guiCenterX, baseYpos, ITEMWIDTH, 400), scrollPos, new Rect(0, 0, ITEMWIDTH - 20, 40 * validTargetCount));
 
                             for (int i = 0; i < players.Count; i++)
                             {

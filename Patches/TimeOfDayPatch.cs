@@ -4,6 +4,7 @@
 // ----------------------------------------------------------------------
 
 using HarmonyLib;
+using UnityEngine.Rendering.HighDefinition;
 
 namespace LethalCompanyMinimap.Patches
 {
@@ -11,14 +12,22 @@ namespace LethalCompanyMinimap.Patches
     internal class TimeOfDayPatch
     {
 
-        [HarmonyPatch(nameof(TimeOfDay.SetInsideLightingDimness))]
+        [HarmonyPatch("Update")]
         [HarmonyPostfix]
-        static void LightUpMinimapIndoorsPatch()
+        static void MinimapBrightnessPatch()
         {
             // Light up dark corridors on Minimap (using the sun)
-            if (GameNetworkManager.Instance.localPlayerController.isInsideFactory)
+            if (GameNetworkManager.Instance != null
+                && GameNetworkManager.Instance.localPlayerController != null
+                && GameNetworkManager.Instance.localPlayerController.isInsideFactory
+                && TimeOfDay.Instance.sunDirect != null)
             {
                 TimeOfDay.Instance.sunDirect.enabled = true;
+                HDAdditionalLightData additionalLightData = TimeOfDay.Instance.sunDirect.GetComponent<HDAdditionalLightData>();
+                if (additionalLightData != null)
+                {
+                    additionalLightData.lightDimmer = MinimapMod.minimapGUI.brightness;
+                }
             }
         }
 
