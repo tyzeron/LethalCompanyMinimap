@@ -12,21 +12,27 @@ namespace LethalCompanyMinimap.Patches
     internal class TimeOfDayPatch
     {
 
-        [HarmonyPatch("Update")]
+        [HarmonyPatch(nameof(TimeOfDay.SetInsideLightingDimness))]
         [HarmonyPostfix]
         static void MinimapBrightnessPatch()
         {
             // Light up dark corridors on Minimap (using the sun)
             if (GameNetworkManager.Instance != null
                 && GameNetworkManager.Instance.localPlayerController != null
-                && GameNetworkManager.Instance.localPlayerController.isInsideFactory
                 && TimeOfDay.Instance.sunDirect != null)
             {
                 TimeOfDay.Instance.sunDirect.enabled = true;
                 HDAdditionalLightData additionalLightData = TimeOfDay.Instance.sunDirect.GetComponent<HDAdditionalLightData>();
                 if (additionalLightData != null)
                 {
-                    additionalLightData.lightDimmer = MinimapMod.minimapGUI.brightness;
+                    if (GameNetworkManager.Instance.localPlayerController.isInsideFactory)
+                    {
+                        additionalLightData.lightDimmer = MinimapMod.minimapGUI.brightness;
+                    }
+                    else
+                    {
+                        additionalLightData.lightDimmer = MinimapMod.defaultBrightness;
+                    }
                 }
             }
         }
