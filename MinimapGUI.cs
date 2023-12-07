@@ -275,16 +275,16 @@ namespace LethalCompanyMinimap.Component
                         GUI.Label(new Rect(guiCenterX, guiYpos + 170, ITEMWIDTH, 30), $"Minimap Size: {minimapSize}", labelStyle);
                         minimapSize = (int)GUI.HorizontalSlider(new Rect(guiCenterX, guiYpos + 200, ITEMWIDTH, 30), minimapSize, 0, 1000);
 
-                        GUI.Label(new Rect(guiCenterX, guiYpos + 220, ITEMWIDTH, 30), $"X Offset: {minimapXPos}", labelStyle);
+                        GUI.Label(new Rect(guiCenterX, guiYpos + 220, ITEMWIDTH, 30), $"X Position Offset: {minimapXPos}", labelStyle);
                         minimapXPos = GUI.HorizontalSlider(new Rect(guiCenterX, guiYpos + 250, ITEMWIDTH, 30), minimapXPos, -1000, 1000);
 
-                        GUI.Label(new Rect(guiCenterX, guiYpos + 270, ITEMWIDTH, 30), $"Y Offset: {minimapYPos}", labelStyle);
+                        GUI.Label(new Rect(guiCenterX, guiYpos + 270, ITEMWIDTH, 30), $"Y Position Offset: {minimapYPos}", labelStyle);
                         minimapYPos = GUI.HorizontalSlider(new Rect(guiCenterX, guiYpos + 300, ITEMWIDTH, 30), minimapYPos, -1000, 1000);
 
                         GUI.Label(new Rect(guiCenterX, guiYpos + 320, ITEMWIDTH, 30), $"Map Zoom: {minimapZoom}", labelStyle);
                         minimapZoom = GUI.HorizontalSlider(new Rect(guiCenterX, guiYpos + 350, ITEMWIDTH, 30), minimapZoom, 0, 100);
 
-                        GUI.Label(new Rect(guiCenterX, guiYpos + 370, ITEMWIDTH, 30), $"Brightness: {brightness}", labelStyle);
+                        GUI.Label(new Rect(guiCenterX, guiYpos + 370, ITEMWIDTH, 30), $"Indoor Brightness: {brightness}", labelStyle);
                         brightness = GUI.HorizontalSlider(new Rect(guiCenterX, guiYpos + 400, ITEMWIDTH, 30), brightness, 0, 16);
 
                         if (GUI.Button(new Rect(guiCenterX, guiYpos + 440, ITEMWIDTH, 30), "Reset to Default Size"))
@@ -308,7 +308,7 @@ namespace LethalCompanyMinimap.Component
                     case 1:
                         showLoots = GUI.Toggle(new Rect(guiCenterX, guiYpos + 90, ITEMWIDTH, 30), showLoots, "Show Loots", toggleStyle);
                         showEnemies = GUI.Toggle(new Rect(guiCenterX, guiYpos + 130, ITEMWIDTH, 30), showEnemies, "Show Enemies", toggleStyle);
-                        showPlayers = GUI.Toggle(new Rect(guiCenterX, guiYpos + 170, ITEMWIDTH, 30), showPlayers, "Show Players", toggleStyle);
+                        showPlayers = GUI.Toggle(new Rect(guiCenterX, guiYpos + 170, ITEMWIDTH, 30), showPlayers, "Show Live Players", toggleStyle);
                         showDeadPlayers = GUI.Toggle(new Rect(guiCenterX, guiYpos + 210, ITEMWIDTH, 30), showDeadPlayers, "Show Dead Players", toggleStyle);
                         showRadarBoosters = GUI.Toggle(new Rect(guiCenterX, guiYpos + 250, ITEMWIDTH, 30), showRadarBoosters, "Show Radar Boosters", toggleStyle);
                         showTerminalCodes = GUI.Toggle(new Rect(guiCenterX, guiYpos + 290, ITEMWIDTH, 30), showTerminalCodes, "Show Terminal Codes", toggleStyle);

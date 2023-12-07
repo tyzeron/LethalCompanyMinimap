@@ -3,6 +3,7 @@
 // Licensed under the GNU Affero General Public License, Version 3
 // ----------------------------------------------------------------------
 
+using GameNetcodeStuff;
 using HarmonyLib;
 using System.Collections;
 using UnityEngine;
@@ -16,7 +17,7 @@ namespace LethalCompanyMinimap.Patches
 
         [HarmonyPatch("Update")]
         [HarmonyPostfix]
-        static void MapCameraAlwaysEnabledPatch(ref Camera ___mapCamera)
+        static void MapCameraAlwaysEnabledPatch(ref Camera ___mapCamera, ref PlayerControllerB ___targetedPlayer)
         {
             if (___mapCamera != null)
             {
@@ -29,17 +30,14 @@ namespace LethalCompanyMinimap.Patches
                     ___mapCamera.orthographicSize = MinimapMod.minimapGUI.minimapZoom;
                 }
 
-                // Sync the Minimap rotation with where player is facing if auto-rotate is on
-                if (MinimapMod.minimapGUI.autoRotate)
+                // Sync the Minimap rotation with where the target player is facing if auto-rotate is on
+                if (MinimapMod.minimapGUI.autoRotate && ___targetedPlayer != null)
                 {
-                    if (GameNetworkManager.Instance.localPlayerController != null)
-                    {
-                        ___mapCamera.transform.eulerAngles = new Vector3(
-                            defaultEulerAngles.x,
-                            GameNetworkManager.Instance.localPlayerController.transform.eulerAngles.y,
-                            defaultEulerAngles.z
-                        );
-                    }
+                    ___mapCamera.transform.eulerAngles = new Vector3(
+                        defaultEulerAngles.x,
+                        ___targetedPlayer.transform.eulerAngles.y,
+                        defaultEulerAngles.z
+                    );
                 }
                 else if (___mapCamera.transform.eulerAngles != defaultEulerAngles)
                 {
