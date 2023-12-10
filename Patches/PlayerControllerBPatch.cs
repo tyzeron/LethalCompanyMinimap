@@ -76,9 +76,9 @@ namespace LethalCompanyMinimap.Patches
         static void UpdateMinimapPatch(PlayerControllerB __instance)
         {
             // Toggle player visibility based on user's Minimap settings
-            if (MinimapMod.minimapGUI.showPlayers != __instance.mapRadarDotAnimator.gameObject.activeSelf)
+            if (MinimapMod.minimapGUI.showLivePlayers != __instance.mapRadarDotAnimator.gameObject.activeSelf)
             {
-                __instance.mapRadarDotAnimator.gameObject.SetActive(MinimapMod.minimapGUI.showPlayers);
+                __instance.mapRadarDotAnimator.gameObject.SetActive(MinimapMod.minimapGUI.showLivePlayers);
             }
 
             // Minimap stuff
@@ -112,8 +112,6 @@ namespace LethalCompanyMinimap.Patches
                         MinimapMod.minimapGUI.minimapXPos, MinimapMod.minimapGUI.minimapYPos + padding
                     );
                 }
-                // Rotate Minimap
-                //minimap.rectTransform.rotation = Quaternion.Euler(0, 0, -StartOfRound.Instance.mapScreen.targetedPlayer.turnCompass.eulerAngles.y % 360);
             }
         }
 

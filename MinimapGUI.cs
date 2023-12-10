@@ -33,7 +33,7 @@ namespace LethalCompanyMinimap.Component
         public float brightness;
         public bool showLoots;
         public bool showEnemies;
-        public bool showPlayers;
+        public bool showLivePlayers;
         public bool showDeadPlayers;
         public bool showRadarBoosters;
         public bool showTerminalCodes;
@@ -55,8 +55,10 @@ namespace LethalCompanyMinimap.Component
         private GUIStyle menuStyle;
         private GUIStyle buttonStyle;
         private GUIStyle labelStyle;
+        private GUIStyle midLabelStyle;
         private GUIStyle tinyLabelStyle;
         private GUIStyle toggleStyle;
+        private GUIStyle midToggleStyle;
 
         private void Awake()
         {
@@ -115,8 +117,10 @@ namespace LethalCompanyMinimap.Component
                 menuStyle = new GUIStyle(GUI.skin.box);
                 buttonStyle = new GUIStyle(GUI.skin.button);
                 labelStyle = new GUIStyle(GUI.skin.label);
+                midLabelStyle = new GUIStyle(GUI.skin.label);
                 tinyLabelStyle = new GUIStyle(GUI.skin.label);
                 toggleStyle = new GUIStyle(GUI.skin.toggle);
+                midToggleStyle = new GUIStyle(GUI.skin.toggle);
 
                 menuStyle.normal.textColor = Color.white;
                 menuStyle.normal.background = MakeTex(2, 2, new Color(0.19f, 0.2f, 0.22f, .9f));
@@ -132,6 +136,12 @@ namespace LethalCompanyMinimap.Component
                 labelStyle.alignment = TextAnchor.MiddleCenter;
                 labelStyle.normal.background.hideFlags = HideFlags.HideAndDontSave;
 
+                midLabelStyle.normal.textColor = Color.white;
+                midLabelStyle.normal.background = MakeTex(2, 2, new Color(0.19f, 0.2f, 0.22f, 0.0f));
+                midLabelStyle.fontSize = 14;
+                midLabelStyle.alignment = TextAnchor.MiddleCenter;
+                midLabelStyle.normal.background.hideFlags = HideFlags.HideAndDontSave;
+
                 tinyLabelStyle.normal.textColor = Color.white;
                 tinyLabelStyle.normal.background = MakeTex(2, 2, new Color(0.19f, 0.2f, 0.22f, 0.0f));
                 tinyLabelStyle.fontSize = 11;
@@ -140,6 +150,9 @@ namespace LethalCompanyMinimap.Component
 
                 toggleStyle.normal.textColor = Color.white;
                 toggleStyle.fontSize = 18;
+
+                midToggleStyle.normal.textColor = Color.white;
+                midToggleStyle.fontSize = 14;
             }
         }
 
@@ -308,7 +321,7 @@ namespace LethalCompanyMinimap.Component
                     case 1:
                         showLoots = GUI.Toggle(new Rect(guiCenterX, guiYpos + 90, ITEMWIDTH, 30), showLoots, "Show Loots", toggleStyle);
                         showEnemies = GUI.Toggle(new Rect(guiCenterX, guiYpos + 130, ITEMWIDTH, 30), showEnemies, "Show Enemies", toggleStyle);
-                        showPlayers = GUI.Toggle(new Rect(guiCenterX, guiYpos + 170, ITEMWIDTH, 30), showPlayers, "Show Live Players", toggleStyle);
+                        showLivePlayers = GUI.Toggle(new Rect(guiCenterX, guiYpos + 170, ITEMWIDTH, 30), showLivePlayers, "Show Live Players", toggleStyle);
                         showDeadPlayers = GUI.Toggle(new Rect(guiCenterX, guiYpos + 210, ITEMWIDTH, 30), showDeadPlayers, "Show Dead Players", toggleStyle);
                         showRadarBoosters = GUI.Toggle(new Rect(guiCenterX, guiYpos + 250, ITEMWIDTH, 30), showRadarBoosters, "Show Radar Boosters", toggleStyle);
                         showTerminalCodes = GUI.Toggle(new Rect(guiCenterX, guiYpos + 290, ITEMWIDTH, 30), showTerminalCodes, "Show Terminal Codes", toggleStyle);
