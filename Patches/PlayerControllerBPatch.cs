@@ -69,6 +69,10 @@ namespace LethalCompanyMinimap.Patches
                 tooltipsOriginalPos = tooltips.anchoredPosition;
             }
             tooltips.anchoredPosition -= new Vector2(0, size);
+
+            // Request Minimap Version and sharing our own Minimap Version
+            HUDManagerPatch.SendMinimapBroadcast("VersionReq");
+            HUDManagerPatch.SendMinimapBroadcast("VersionResp", MinimapMod.modVersion);
         }
 
         [HarmonyPatch("Update")]

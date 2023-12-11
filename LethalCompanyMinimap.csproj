@@ -94,6 +94,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models.cs" />
     <Compile Include="Patches\HUDManagerPatch.cs" />
     <Compile Include="Patches\DeadBodyInfoPatch.cs" />
     <Compile Include="Patches\TimeOfDayPatch.cs" />

@@ -49,8 +49,9 @@ namespace LethalCompanyMinimap.Component
         private bool lockPrefix = false;
         string prefix = "MONITORING";
         private CursorLockMode lastCursorState = Cursor.lockState;
-        private Vector2 scrollPos = Vector2.zero;
+        private Vector2 scrollPos = Vector2.zero;  // select target
         private int validTargetCount = 0;
+        public IDictionary<PlayerControllerB, ModUser> modUsers;
 
         private GUIStyle menuStyle;
         private GUIStyle buttonStyle;
@@ -63,6 +64,7 @@ namespace LethalCompanyMinimap.Component
         private void Awake()
         {
             MinimapMod.mls.LogInfo("MinimapGUI loaded.");
+            modUsers = new Dictionary<PlayerControllerB, ModUser>();
 
             guiKey.OnKey = ToggleGUI;
             toggleMinimapKey.OnKey = () => { enableMinimap = !enableMinimap; };
