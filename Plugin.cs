@@ -31,7 +31,7 @@ namespace LethalCompanyMinimap
         public const float defaultXoffset = 0f;
         public const float defaultYoffset = 0f;
         public const float defaultMapZoom = 19.7f;
-        public const float defaultBrightness = 1f;
+        public const float defaultBrightness = 0f;
 
         private static ConfigEntry<MouseAndKeyboard> guiKeyConfig;
         private static ConfigEntry<MouseAndKeyboard> toggleMinimapKeyConfig;

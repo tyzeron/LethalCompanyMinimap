@@ -17,7 +17,7 @@ namespace LethalCompanyMinimap.Patches
 
         [HarmonyPatch("Update")]
         [HarmonyPostfix]
-        static void MapCameraAlwaysEnabledPatch(ref Camera ___mapCamera, ref PlayerControllerB ___targetedPlayer)
+        static void MapCameraAlwaysEnabledPatch(ref Camera ___mapCamera, ref PlayerControllerB ___targetedPlayer, ref Light ___mapCameraLight)
         {
             if (___mapCamera != null)
             {
@@ -42,6 +42,17 @@ namespace LethalCompanyMinimap.Patches
                 else if (___mapCamera.transform.eulerAngles != defaultEulerAngles)
                 {
                     ___mapCamera.transform.eulerAngles = defaultEulerAngles;
+                }
+
+            if (___mapCameraLight != null && ___targetedPlayer != null)
+            {
+                // Ensure the map spotlight is always enabled
+                ___mapCameraLight.enabled = ___targetedPlayer.isInsideFactory;
+
+                // Hide the spotlight map from player's camera
+                if (GameNetworkManager.Instance != null && GameNetworkManager.Instance.localPlayerController != null)
+                {
+                    ___mapCameraLight.cullingMask = ~GameNetworkManager.Instance.localPlayerController.gameplayCamera.cullingMask;
                 }
             }
         }

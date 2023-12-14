@@ -333,8 +333,8 @@ namespace LethalCompanyMinimap.Component
                         GUI.Label(new Rect(guiCenterX, guiYpos + 320, ITEMWIDTH, 30), $"Map Zoom: {minimapZoom}", labelStyle);
                         minimapZoom = GUI.HorizontalSlider(new Rect(guiCenterX, guiYpos + 350, ITEMWIDTH, 30), minimapZoom, 0, 100);
 
-                        GUI.Label(new Rect(guiCenterX, guiYpos + 370, ITEMWIDTH, 30), $"Indoor Brightness: {brightness}", labelStyle);
-                        brightness = GUI.HorizontalSlider(new Rect(guiCenterX, guiYpos + 400, ITEMWIDTH, 30), brightness, 0, 16);
+                        GUI.Label(new Rect(guiCenterX, guiYpos + 370, ITEMWIDTH, 30), $"Extra Brightness: {brightness}", labelStyle);
+                        brightness = GUI.HorizontalSlider(new Rect(guiCenterX, guiYpos + 400, ITEMWIDTH, 30), brightness, 0, 50);
 
                         if (LeftClickButton(new Rect(guiCenterX, guiYpos + 440, ITEMWIDTH, 30), "Reset to Default Size"))
                         {
