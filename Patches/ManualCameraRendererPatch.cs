@@ -6,6 +6,8 @@
 using GameNetcodeStuff;
 using HarmonyLib;
 using System.Collections;
+using System.Reflection;
+using TMPro;
 using UnityEngine;
 
 namespace LethalCompanyMinimap.Patches
@@ -43,6 +45,22 @@ namespace LethalCompanyMinimap.Patches
                 {
                     ___mapCamera.transform.eulerAngles = defaultEulerAngles;
                 }
+
+                // Rotate Terminal Code labels based on the map orientation
+                foreach (TerminalAccessibleObject terminalObject in Object.FindObjectsOfType<TerminalAccessibleObject>())
+                {
+                    FieldInfo mapRadarTextFieldInfo = terminalObject.GetType().GetField("mapRadarText", BindingFlags.NonPublic | BindingFlags.Instance);
+                    if (mapRadarTextFieldInfo != null)
+                    {
+                        TextMeshProUGUI mapRadarText = (TextMeshProUGUI)mapRadarTextFieldInfo.GetValue(terminalObject);
+                        mapRadarText.transform.eulerAngles = new Vector3(
+                            defaultEulerAngles.x,
+                            ___mapCamera.transform.eulerAngles.y,
+                            defaultEulerAngles.z
+                        );
+                    }
+                }
+            }
 
             if (___mapCameraLight != null && ___targetedPlayer != null)
             {
