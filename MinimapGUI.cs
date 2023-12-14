@@ -261,6 +261,40 @@ namespace LethalCompanyMinimap.Component
             }
         }
 
+        private static MouseAndKeyboard MouseWasPressedThisFrame()
+        {
+            Mouse mouse = Mouse.current;
+            if (mouse == null)
+            {
+                return MouseAndKeyboard.None;
+            }
+            if (mouse.leftButton.wasPressedThisFrame)
+            {
+                //return MouseAndKeyboard.MouseLeft;
+                return MouseAndKeyboard.None;  // Prevent people accidentally keybind left-click
+            }
+            else if (mouse.middleButton.wasPressedThisFrame)
+            {
+                return MouseAndKeyboard.MouseMiddle;
+            }
+            else if (mouse.rightButton.wasPressedThisFrame)
+            {
+                return MouseAndKeyboard.MouseRight;
+            }
+            else if (mouse.forwardButton.wasPressedThisFrame)
+            {
+                return MouseAndKeyboard.MouseForward;
+            }
+            else if (mouse.backButton.wasPressedThisFrame)
+            {
+                return MouseAndKeyboard.MouseBack;
+            }
+            else
+            {
+                return MouseAndKeyboard.None;
+            }
+        }
+
         public void OnGUI()
         {
             if (menuStyle == null)
@@ -302,20 +336,20 @@ namespace LethalCompanyMinimap.Component
                         GUI.Label(new Rect(guiCenterX, guiYpos + 370, ITEMWIDTH, 30), $"Indoor Brightness: {brightness}", labelStyle);
                         brightness = GUI.HorizontalSlider(new Rect(guiCenterX, guiYpos + 400, ITEMWIDTH, 30), brightness, 0, 16);
 
-                        if (GUI.Button(new Rect(guiCenterX, guiYpos + 440, ITEMWIDTH, 30), "Reset to Default Size"))
+                        if (LeftClickButton(new Rect(guiCenterX, guiYpos + 440, ITEMWIDTH, 30), "Reset to Default Size"))
                         {
                             minimapSize = 200;
                         }
-                        if (GUI.Button(new Rect(guiCenterX, guiYpos + 480, ITEMWIDTH, 30), "Reset to Default Position"))
+                        if (LeftClickButton(new Rect(guiCenterX, guiYpos + 480, ITEMWIDTH, 30), "Reset to Default Position"))
                         {
                             minimapXPos = 0;
                             minimapYPos = 0;
                         }
-                        if (GUI.Button(new Rect(guiCenterX, guiYpos + 520, ITEMWIDTH, 30), "Reset to Default Zoom"))
+                        if (LeftClickButton(new Rect(guiCenterX, guiYpos + 520, ITEMWIDTH, 30), "Reset to Default Zoom"))
                         {
                             minimapZoom = MinimapMod.defaultMapZoom;
                         }
-                        if (GUI.Button(new Rect(guiCenterX, guiYpos + 560, ITEMWIDTH, 30), "Reset to Default Brightness"))
+                        if (LeftClickButton(new Rect(guiCenterX, guiYpos + 560, ITEMWIDTH, 30), "Reset to Default Brightness"))
                         {
                             brightness = MinimapMod.defaultBrightness;
                         }
@@ -347,7 +381,7 @@ namespace LethalCompanyMinimap.Component
                                 {
                                     continue;
                                 }
-                                if (GUI.Button(new Rect(0, (40 * buttonCount), ITEMWIDTH - 30, 30), players[i].name))
+                                if (LeftClickButton(new Rect(0, (40 * buttonCount), ITEMWIDTH - 30, 30), players[i].name))
                                 {
                                     SetMinimapTarget(i);
                                 }
@@ -359,41 +393,46 @@ namespace LethalCompanyMinimap.Component
                         break;
                     case 3:
                         string guiKeyButtonLabel = guiKey.IsSettingKey ? "Press a Key..." : $"Open Mod Menu: {guiKey.Key}";
-                        if (GUI.Button(new Rect(guiCenterX, guiYpos + 90, ITEMWIDTH, 30), guiKeyButtonLabel))
+                        if (LeftClickButton(new Rect(guiCenterX, guiYpos + 90, ITEMWIDTH, 30), guiKeyButtonLabel))
                         {
                             hotkeyManager.ResetSettingKey();
                             guiKey.IsSettingKey = true;
                         }
                         string toggleMinimapKeyButtonLabel = toggleMinimapKey.IsSettingKey ? "Press a Key..." : $"Toggle Minimap: {toggleMinimapKey.Key}";
-                        if (GUI.Button(new Rect(guiCenterX, guiYpos + 130, ITEMWIDTH, 30), toggleMinimapKeyButtonLabel))
+                        if (LeftClickButton(new Rect(guiCenterX, guiYpos + 130, ITEMWIDTH, 30), toggleMinimapKeyButtonLabel))
                         {
                             hotkeyManager.ResetSettingKey();
                             toggleMinimapKey.IsSettingKey = true;
                         }
                         string toggleOverrideKeyButtonLabel = toggleOverrideKey.IsSettingKey ? "Press a Key..." : $"Override Ship Controls: {toggleOverrideKey.Key}";
-                        if (GUI.Button(new Rect(guiCenterX, guiYpos + 170, ITEMWIDTH, 30), toggleOverrideKeyButtonLabel))
+                        if (LeftClickButton(new Rect(guiCenterX, guiYpos + 170, ITEMWIDTH, 30), toggleOverrideKeyButtonLabel))
                         {
                             hotkeyManager.ResetSettingKey();
                             toggleOverrideKey.IsSettingKey = true;
                         }
                         string switchTargetKeyButtonLabel = switchTargetKey.IsSettingKey ? "Press a Key..." : $"Switch Minimap Target: {switchTargetKey.Key}";
-                        if (GUI.Button(new Rect(guiCenterX, guiYpos + 210, ITEMWIDTH, 30), switchTargetKeyButtonLabel))
+                        if (LeftClickButton(new Rect(guiCenterX, guiYpos + 210, ITEMWIDTH, 30), switchTargetKeyButtonLabel))
                         {
                             hotkeyManager.ResetSettingKey();
                             switchTargetKey.IsSettingKey = true;
                         }
-                        if (GUI.Button(new Rect(guiCenterX, guiYpos + 280, ITEMWIDTH, 30), "Reset to Default Keybinds"))
+                        if (LeftClickButton(new Rect(guiCenterX, guiYpos + 280, ITEMWIDTH, 30), "Reset to Default Keybinds"))
                         {
                             hotkeyManager.ResetToDefaultKey();
                         }
 
-                        if (hotkeyManager.AnyHotkeyIsSettingKey() && Keyboard.current.anyKey.wasPressedThisFrame)
+                        if (hotkeyManager.AnyHotkeyIsSettingKey())
                         {
-                            if (Keyboard.current.escapeKey.wasPressedThisFrame)
+                            MouseAndKeyboard mouseKeyPressed = MouseWasPressedThisFrame();
+                            if (mouseKeyPressed != MouseAndKeyboard.None)
+                            {
+                                hotkeyManager.SetHotKey(mouseKeyPressed);
+                            }
+                            else if (Keyboard.current.escapeKey.wasPressedThisFrame)
                             {
                                 hotkeyManager.ResetIsSettingKey();
                             }
-                            else
+                            else if (Keyboard.current.anyKey.wasPressedThisFrame)
                             {
                                 foreach (KeyControl keyControl in Keyboard.current.allKeys)
                                 {
@@ -410,5 +449,54 @@ namespace LethalCompanyMinimap.Component
                 MinimapMod.Instance.SyncConfigFromGUI();
             }
         }
+
+        private bool LeftClickButton(Rect rect, string text, GUIStyle style = null)
+        {
+            // Source: https://forum.unity.com/threads/solved-gui-button-that-only-work-with-left-mouse-button.31124/
+            GUIContent content = new GUIContent(text);
+            if (style == null) style = GUI.skin.button;
+
+            Event evt = Event.current;
+            int controlId = GUIUtility.GetControlID(FocusType.Passive);
+
+            switch (evt.type)
+            {
+                case EventType.MouseDown:
+                    {
+                        if (GUIUtility.hotControl == 0 && rect.Contains(evt.mousePosition) && evt.button == 0)
+                        {
+                            GUIUtility.hotControl = controlId;
+                            evt.Use();
+                        }
+                        break;
+                    }
+                case EventType.MouseDrag:
+                    {
+                        if (GUIUtility.hotControl == controlId)
+                        {
+                            evt.Use();
+                        }
+                        break;
+                    }
+                case EventType.MouseUp:
+                    {
+                        if (GUIUtility.hotControl == controlId && rect.Contains(evt.mousePosition) && evt.button == 0)
+                        {
+                            GUIUtility.hotControl = 0;
+                            evt.Use();
+                            return true;
+                        }
+                        break;
+                    }
+                case EventType.Repaint:
+                    {
+                        style.Draw(rect, content, controlId);
+                        break;
+                    }
+            }
+
+            return false;
+        }
+
     }
 }

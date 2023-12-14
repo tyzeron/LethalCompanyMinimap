@@ -23,20 +23,20 @@ namespace LethalCompanyMinimap
         public const string modAuthor = "Tyzeron";
         public const string modRepository = "tyzeron/LethalCompanyMinimap";
 
-        public static Key defaultGuiKey = Key.F1;
-        public static Key defaultToggleMinimapKey = Key.F2;
-        public static Key defaultToggleOverrideKey = Key.F3;
-        public static Key defaultSwitchTargetKey = Key.F4;
+        public static MouseAndKeyboard defaultGuiKey = MouseAndKeyboard.F1;
+        public static MouseAndKeyboard defaultToggleMinimapKey = MouseAndKeyboard.F2;
+        public static MouseAndKeyboard defaultToggleOverrideKey = MouseAndKeyboard.F3;
+        public static MouseAndKeyboard defaultSwitchTargetKey = MouseAndKeyboard.F4;
         public const int defaultMinimapSize = 200;
         public const float defaultXoffset = 0f;
         public const float defaultYoffset = 0f;
         public const float defaultMapZoom = 19.7f;
         public const float defaultBrightness = 1f;
 
-        private static ConfigEntry<Key> guiKeyConfig;
-        private static ConfigEntry<Key> toggleMinimapKeyConfig;
-        private static ConfigEntry<Key> toggleOverrideKeyConfig;
-        private static ConfigEntry<Key> switchTargetKeyConfig;
+        private static ConfigEntry<MouseAndKeyboard> guiKeyConfig;
+        private static ConfigEntry<MouseAndKeyboard> toggleMinimapKeyConfig;
+        private static ConfigEntry<MouseAndKeyboard> toggleOverrideKeyConfig;
+        private static ConfigEntry<MouseAndKeyboard> switchTargetKeyConfig;
         private static ConfigEntry<bool> enableMinimapConfig;
         private static ConfigEntry<bool> autoRotateConfig;
         private static ConfigEntry<int> minimapSizeConfig;
