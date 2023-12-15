@@ -16,7 +16,6 @@ back at the ship.
 style="display: block; margin-left: auto; margin-right: auto;" />
 
 
-
 # Usage
 
 These are the **default hotkeys**:
@@ -59,12 +58,13 @@ mod installed.
     - Hotkey for toggling the Minimap
     - Hotkey for overriding ship controls
     - Hotkey for switching Minimap target
+- Hotkeys can be binded to not only keyboard but also mouse buttons
 - Easily reset specific (or all) configurable settings
 - All settings configurable via a user-friendly in-game GUI
 - All configurable settings saved across sessions
 - Toggle visibility of different Minimap icons
-    - Loots, Enemies, Alived Players, Dead Players, Terminal Codes, and 
-Radar Boosters
+    - Loots, Enemies, Alived Players, Dead Players, Terminal Codes, 
+Radar Boosters, and the Ship Arrow
 - Informs if the mod is outdated and a newer version is available
 
 ![Minimap GUI](Images/minimap-gui.png)
