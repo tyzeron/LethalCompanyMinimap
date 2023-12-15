@@ -10,7 +10,6 @@ using HarmonyLib;
 using LethalCompanyMinimap.Component;
 using LethalCompanyMinimap.Patches;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace LethalCompanyMinimap
 {
