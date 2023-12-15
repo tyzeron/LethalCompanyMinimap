@@ -50,6 +50,7 @@ namespace LethalCompanyMinimap
         private static ConfigEntry<bool> showDeadPlayersConfig;
         private static ConfigEntry<bool> showRadarBoostersConfig;
         private static ConfigEntry<bool> showTerminalCodesConfig;
+        private static ConfigEntry<bool> showShipArrowConfig;
         private static ConfigEntry<bool> freezePlayerIndexConfig;
 
         public static MinimapMod Instance;
@@ -114,6 +115,7 @@ namespace LethalCompanyMinimap
             showDeadPlayersConfig = Config.Bind("Minimap Icons", "Show Dead Players", true, "Toggles visibility of dead players (greyed-out cyan circles) on your Minimap");
             showRadarBoostersConfig = Config.Bind("Minimap Icons", "Show Radar Boosters", true, "Toggles visibility of radar boosters (blue circles) on your Minimap");
             showTerminalCodesConfig = Config.Bind("Minimap Icons", "Show Terminal Codes", true, "Toggles visibility of terminal codes on your Minimap");
+            showShipArrowConfig = Config.Bind("Minimap Icons", "Show Ship Arrow", true, "Toggles visibility of the arrow pointing to the Ship");
             freezePlayerIndexConfig = Config.Bind("Advance Settings", "Override Ship Controls", false, "Disables the ability to change the Minimap focus through the ship control panel, allowing Minimap focus changes only through the mod menu");
         }
 
@@ -136,6 +138,7 @@ namespace LethalCompanyMinimap
             minimapGUI.showDeadPlayers = showDeadPlayersConfig.Value;
             minimapGUI.showRadarBoosters = showRadarBoostersConfig.Value;
             minimapGUI.showTerminalCodes = showTerminalCodesConfig.Value;
+            minimapGUI.showShipArrow = showShipArrowConfig.Value;
             minimapGUI.freezePlayerIndex = freezePlayerIndexConfig.Value;
         }
 
@@ -158,6 +161,7 @@ namespace LethalCompanyMinimap
             showDeadPlayersConfig.Value = minimapGUI.showDeadPlayers;
             showRadarBoostersConfig.Value = minimapGUI.showRadarBoosters;
             showTerminalCodesConfig.Value = minimapGUI.showTerminalCodes;
+            showShipArrowConfig.Value = minimapGUI.showShipArrow;
             freezePlayerIndexConfig.Value = minimapGUI.freezePlayerIndex;
         }
     }

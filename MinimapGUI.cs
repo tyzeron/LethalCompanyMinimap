@@ -37,6 +37,7 @@ namespace LethalCompanyMinimap.Component
         public bool showDeadPlayers;
         public bool showRadarBoosters;
         public bool showTerminalCodes;
+        public bool showShipArrow;
         public bool freezePlayerIndex;
 
         private string[] navbarStr = { "Minimap", "Icons", "Select Target", "Keybinds" };
@@ -361,6 +362,7 @@ namespace LethalCompanyMinimap.Component
                         showDeadPlayers = GUI.Toggle(new Rect(guiCenterX, guiYpos + 210, ITEMWIDTH, 30), showDeadPlayers, "Show Dead Players", toggleStyle);
                         showRadarBoosters = GUI.Toggle(new Rect(guiCenterX, guiYpos + 250, ITEMWIDTH, 30), showRadarBoosters, "Show Radar Boosters", toggleStyle);
                         showTerminalCodes = GUI.Toggle(new Rect(guiCenterX, guiYpos + 290, ITEMWIDTH, 30), showTerminalCodes, "Show Terminal Codes", toggleStyle);
+                        showShipArrow = GUI.Toggle(new Rect(guiCenterX, guiYpos + 330, ITEMWIDTH, 30), showShipArrow, "Show Ship Arrow", toggleStyle);
                         break;
                     case 2:
                         List<TransformAndName> players = StartOfRound.Instance != null ? StartOfRound.Instance.mapScreen.radarTargets : new List<TransformAndName>();

@@ -19,7 +19,9 @@ namespace LethalCompanyMinimap.Patches
 
         [HarmonyPatch("Update")]
         [HarmonyPostfix]
-        static void MapCameraAlwaysEnabledPatch(ref Camera ___mapCamera, ref PlayerControllerB ___targetedPlayer, ref Light ___mapCameraLight)
+        static void MapCameraAlwaysEnabledPatch(
+            ref Camera ___mapCamera, ref PlayerControllerB ___targetedPlayer, ref Light ___mapCameraLight,
+            ref Transform ___shipArrowPointer, GameObject ___shipArrowUI)
         {
             if (___mapCamera != null)
             {
@@ -71,6 +73,26 @@ namespace LethalCompanyMinimap.Patches
                 if (GameNetworkManager.Instance != null && GameNetworkManager.Instance.localPlayerController != null)
                 {
                     ___mapCameraLight.cullingMask = ~GameNetworkManager.Instance.localPlayerController.gameplayCamera.cullingMask;
+                }
+            }
+
+            if (___shipArrowPointer != null && ___shipArrowUI != null && ___targetedPlayer != null)
+            {
+                // Handle and toggle the arrow pointing to the ship based on the user's mod settings
+                if (MinimapMod.minimapGUI.showShipArrow && !___targetedPlayer.isInsideFactory
+                    && Vector3.Distance(___targetedPlayer.transform.position, StartOfRound.Instance.elevatorTransform.transform.position) > 16f)
+                {
+                    if (StartOfRound.Instance != null)
+                    {
+                        ___shipArrowPointer.LookAt(StartOfRound.Instance.elevatorTransform);
+                    }
+                    int arrowOffset = MinimapMod.minimapGUI.autoRotate ? 45 : 0;
+                    ___shipArrowPointer.eulerAngles = new Vector3(0f, ___shipArrowPointer.eulerAngles.y + arrowOffset, 0f);
+                    ___shipArrowUI.SetActive(value: true);
+                }
+                else
+                {
+                    ___shipArrowUI.SetActive(value: false);
                 }
             }
         }
