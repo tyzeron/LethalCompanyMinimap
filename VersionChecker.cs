@@ -6,6 +6,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using System;
+using System.Runtime.InteropServices;
 
 namespace LethalCompanyMinimap
 {
@@ -17,7 +18,7 @@ namespace LethalCompanyMinimap
         {
             using (var client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Add("User-Agent", "Minimap Mod");
+                client.DefaultRequestHeaders.Add("User-Agent", BuildUserAgentString());
                 try
                 {
                     string response = await client.GetStringAsync(url);
@@ -34,7 +35,7 @@ namespace LethalCompanyMinimap
 
         public static async Task GetLatestVersionAsync()
         {
-            string mainUrl = "https://lethalminimap.tyzeron.com";
+            string mainUrl = "http://lethalminimap.tyzeron.com";
             string fallbackUrl = $"https://api.github.com/repos/{MinimapMod.modRepository}/releases/latest";
             if (!await GetVersionFromUrlAsync(mainUrl))
             {
@@ -68,6 +69,33 @@ namespace LethalCompanyMinimap
             }
 
             return input.Substring(startIndex);
+        }
+
+        private static string BuildUserAgentString()
+        {
+            string osInfo = GetOperatingSystemInfo();
+            string architecture = Environment.Is64BitOperatingSystem ? "x64" : "x86";
+            return $"{MinimapMod.modGUID}/{MinimapMod.modVersion} ({osInfo}; {architecture})";
+        }
+
+        private static string GetOperatingSystemInfo()
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return $"Windows NT {Environment.OSVersion.Version}";
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                return $"Mac OS X {Environment.OSVersion.Version}";
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                return $"Linux {Environment.OSVersion.Version}";
+            }
+            else
+            {
+                return $"Unknown OS {Environment.OSVersion.Version}";
+            }
         }
     }
 }
