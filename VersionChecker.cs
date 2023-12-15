@@ -13,22 +13,32 @@ namespace LethalCompanyMinimap
     {
         public static string latestVersion = null;
 
-        public static async Task GetLatestVersionAsync()
+        private static async Task<bool> GetVersionFromUrlAsync(string url)
         {
-            string url = $"https://api.github.com/repos/{MinimapMod.modRepository}/releases/latest";
-
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Add("User-Agent", "Minimap Mod");
                 try
                 {
-                    String response = await client.GetStringAsync(url);
+                    string response = await client.GetStringAsync(url);
                     latestVersion = ParseTagNameFromJson(response);
+                    return true;
                 }
-                catch (HttpRequestException e)
+                catch (Exception e)
                 {
-                    MinimapMod.mls.LogError($"Failed to get the latest version of {MinimapMod.modName} Mod :(");
+                    MinimapMod.mls.LogError($"Failed to get the latest version from {url} for {MinimapMod.modName} Mod. Error: {e.Message}");
+                    return false;
                 }
+            }
+        }
+
+        public static async Task GetLatestVersionAsync()
+        {
+            string mainUrl = "https://lethalminimap.tyzeron.com";
+            string fallbackUrl = $"https://api.github.com/repos/{MinimapMod.modRepository}/releases/latest";
+            if (!await GetVersionFromUrlAsync(mainUrl))
+            {
+                await GetVersionFromUrlAsync(fallbackUrl);
             }
         }
 
