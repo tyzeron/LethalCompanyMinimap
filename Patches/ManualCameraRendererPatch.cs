@@ -20,7 +20,7 @@ namespace LethalCompanyMinimap.Patches
         [HarmonyPatch("Update")]
         [HarmonyPostfix]
         static void MapCameraAlwaysEnabledPatch(
-            ref Camera ___mapCamera, ref PlayerControllerB ___targetedPlayer, ref Light ___mapCameraLight,
+            ref Camera ___mapCamera, ref PlayerControllerB ___targetedPlayer, ref Image ___compassRose, //ref Light ___mapCameraLight,
             ref Transform ___shipArrowPointer, GameObject ___shipArrowUI)
         {
             if (___mapCamera != null)
@@ -35,13 +35,15 @@ namespace LethalCompanyMinimap.Patches
                 }
 
                 // Sync the Minimap rotation with where the target player is facing if auto-rotate is on
-                if (MinimapMod.minimapGUI.autoRotate && ___targetedPlayer != null)
+                if (MinimapMod.minimapGUI.autoRotate && ___targetedPlayer != null && ___compassRose != null)
                 {
                     ___mapCamera.transform.eulerAngles = new Vector3(
                         defaultEulerAngles.x,
                         ___targetedPlayer.transform.eulerAngles.y,
                         defaultEulerAngles.z
                     );
+                    ___compassRose.enabled = false;
+                    
                 }
                 else if (___mapCamera.transform.eulerAngles != defaultEulerAngles)
                 {
@@ -64,7 +66,7 @@ namespace LethalCompanyMinimap.Patches
                 }
             }
 
-            if (___mapCameraLight != null && ___targetedPlayer != null)
+            /*if (___mapCameraLight != null && ___targetedPlayer != null)
             {
                 // Ensure the map spotlight is always enabled
                 ___mapCameraLight.enabled = ___targetedPlayer.isInsideFactory;
@@ -74,7 +76,7 @@ namespace LethalCompanyMinimap.Patches
                 {
                     ___mapCameraLight.cullingMask = ~GameNetworkManager.Instance.localPlayerController.gameplayCamera.cullingMask;
                 }
-            }
+            }*/
 
             if (___shipArrowPointer != null && ___shipArrowUI != null && ___targetedPlayer != null)
             {
