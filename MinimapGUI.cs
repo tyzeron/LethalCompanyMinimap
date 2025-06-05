@@ -33,6 +33,7 @@ namespace LethalCompanyMinimap.Component
         public float brightness;
         public bool showLoots;
         public bool showEnemies;
+        public bool showTurrets;
         public bool showLivePlayers;
         public bool showDeadPlayers;
         public bool showRadarBoosters;
@@ -358,11 +359,34 @@ namespace LethalCompanyMinimap.Component
                     case 1:
                         showLoots = GUI.Toggle(new Rect(guiCenterX, guiYpos + 90, ITEMWIDTH, 30), showLoots, "Show Loots", toggleStyle);
                         showEnemies = GUI.Toggle(new Rect(guiCenterX, guiYpos + 130, ITEMWIDTH, 30), showEnemies, "Show Enemies", toggleStyle);
-                        showLivePlayers = GUI.Toggle(new Rect(guiCenterX, guiYpos + 170, ITEMWIDTH, 30), showLivePlayers, "Show Live Players", toggleStyle);
-                        showDeadPlayers = GUI.Toggle(new Rect(guiCenterX, guiYpos + 210, ITEMWIDTH, 30), showDeadPlayers, "Show Dead Players", toggleStyle);
-                        showRadarBoosters = GUI.Toggle(new Rect(guiCenterX, guiYpos + 250, ITEMWIDTH, 30), showRadarBoosters, "Show Radar Boosters", toggleStyle);
-                        showTerminalCodes = GUI.Toggle(new Rect(guiCenterX, guiYpos + 290, ITEMWIDTH, 30), showTerminalCodes, "Show Terminal Codes", toggleStyle);
-                        showShipArrow = GUI.Toggle(new Rect(guiCenterX, guiYpos + 330, ITEMWIDTH, 30), showShipArrow, "Show Ship Arrow", toggleStyle);
+                        showTurrets = GUI.Toggle(new Rect(guiCenterX, guiYpos + 170, ITEMWIDTH, 30), showTurrets, "Show Turrets", toggleStyle);
+                        showLivePlayers = GUI.Toggle(new Rect(guiCenterX, guiYpos + 210, ITEMWIDTH, 30), showLivePlayers, "Show Live Players", toggleStyle);
+                        showDeadPlayers = GUI.Toggle(new Rect(guiCenterX, guiYpos + 250, ITEMWIDTH, 30), showDeadPlayers, "Show Dead Players", toggleStyle);
+                        showRadarBoosters = GUI.Toggle(new Rect(guiCenterX, guiYpos + 290, ITEMWIDTH, 30), showRadarBoosters, "Show Radar Boosters", toggleStyle);
+                        showTerminalCodes = GUI.Toggle(new Rect(guiCenterX, guiYpos + 330, ITEMWIDTH, 30), showTerminalCodes, "Show Terminal Codes", toggleStyle);
+                        showShipArrow = GUI.Toggle(new Rect(guiCenterX, guiYpos + 370, ITEMWIDTH, 30), showShipArrow, "Show Ship Arrow", toggleStyle);
+                        if (LeftClickButton(new Rect(guiCenterX, guiYpos + 430, ITEMWIDTH, 30), "Show all Icons"))
+                        {
+                            showLoots = true;
+                            showEnemies = true;
+                            showTurrets = true;
+                            showLivePlayers = true;
+                            showDeadPlayers = true;
+                            showRadarBoosters = true;
+                            showTerminalCodes = true;
+                            showShipArrow = true;
+                        }
+                        if (LeftClickButton(new Rect(guiCenterX, guiYpos + 470, ITEMWIDTH, 30), "Hide all Icons"))
+                        {
+                            showLoots = false;
+                            showEnemies = false;
+                            showTurrets = false;
+                            showLivePlayers = false;
+                            showDeadPlayers = false;
+                            showRadarBoosters = false;
+                            showTerminalCodes = false;
+                            showShipArrow = false;
+                        }
                         break;
                     case 2:
                         List<TransformAndName> players = StartOfRound.Instance != null ? StartOfRound.Instance.mapScreen.radarTargets : new List<TransformAndName>();

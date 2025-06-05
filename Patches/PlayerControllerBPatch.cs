@@ -72,7 +72,7 @@ namespace LethalCompanyMinimap.Patches
                 minimapLight.type = LightType.Directional;
                 minimapLight.range = 100;
                 minimapLight.color = Color.white;
-                minimapLight.colorTemperature = 6500;
+                minimapLight.colorTemperature = 5000;
                 minimapLight.intensity = MinimapMod.defaultBrightness;
                 minimapLight.cullingMask = 0;
             }
