@@ -15,6 +15,8 @@ namespace LethalCompanyMinimap.Patches
     {
         private static bool showTerminalCodes = MinimapMod.minimapGUI.showTerminalCodes;
 
+        private static readonly FieldInfo mapRadarTextField = AccessTools.Field(typeof(TerminalAccessibleObject), "mapRadarText");
+
         [HarmonyPatch(nameof(GrabbableObject.LateUpdate))]
         [HarmonyPostfix]
         static void LootVisibilityOnMapPatch(GrabbableObject __instance)
@@ -33,11 +35,11 @@ namespace LethalCompanyMinimap.Patches
             {
                 showTerminalCodes = MinimapMod.minimapGUI.showTerminalCodes;
                 TerminalAccessibleObject[] taoObjecs = Object.FindObjectsOfType<TerminalAccessibleObject>();
-                FieldInfo mapRadarTextField = AccessTools.Field(typeof(TerminalAccessibleObject), "mapRadarText");
                 for (int i = 0; i < taoObjecs.Length; i++)
                 {
                     TextMeshProUGUI mapRadarText = (TextMeshProUGUI)mapRadarTextField.GetValue(taoObjecs[i]);
                     mapRadarText.gameObject.SetActive(MinimapMod.minimapGUI.showTerminalCodes);
+                    taoObjecs[i].mapRadarObject.SetActive(MinimapMod.minimapGUI.showTerminalCodes);
                 }
             }
         }

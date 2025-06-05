@@ -39,6 +39,8 @@ namespace LethalCompanyMinimap.Component
         public bool showRadarBoosters;
         public bool showTerminalCodes;
         public bool showShipArrow;
+        public bool showCompass;
+        public bool showHeadCam;
         public bool freezePlayerIndex;
 
         private string[] navbarStr = { "Minimap", "Icons", "Select Target", "Keybinds" };
@@ -49,7 +51,7 @@ namespace LethalCompanyMinimap.Component
         public int playerIndex = 0;
         public int realPlayerIndex = 0;
         private bool lockPrefix = false;
-        string prefix = "MONITORING";
+        string prefix = "";
         private CursorLockMode lastCursorState = Cursor.lockState;
         private Vector2 scrollPos = Vector2.zero;  // select target
         private int validTargetCount = 0;
@@ -111,7 +113,7 @@ namespace LethalCompanyMinimap.Component
             playerIndex = targetTransformIndex;
             StartOfRound.Instance.mapScreen.targetTransformIndex = playerIndex;
             StartOfRound.Instance.mapScreen.targetedPlayer = StartOfRound.Instance.mapScreen.radarTargets[playerIndex].transform.gameObject.GetComponent<PlayerControllerB>();
-            StartOfRound.Instance.mapScreenPlayerName.text = $"{prefix}: {StartOfRound.Instance.mapScreen.radarTargets[playerIndex].name}";
+            StartOfRound.Instance.mapScreenPlayerName.text = $"{prefix}{StartOfRound.Instance.mapScreen.radarTargets[playerIndex].name}";
         }
 
         private void IntitializeMenu()
@@ -250,8 +252,8 @@ namespace LethalCompanyMinimap.Component
                 if (StartOfRound.Instance != null)
                 {
                     lockPrefix = freezePlayerIndex;
-                    prefix = freezePlayerIndex ? "LOCKED" : "MONITORING";
-                    StartOfRound.Instance.mapScreenPlayerName.text = $"{prefix}: {StartOfRound.Instance.mapScreen.radarTargets[playerIndex].name}";
+                    prefix = freezePlayerIndex ? "*" : "";
+                    StartOfRound.Instance.mapScreenPlayerName.text = $"{prefix}{StartOfRound.Instance.mapScreen.radarTargets[playerIndex].name}";
                 }
             }
 
@@ -365,7 +367,9 @@ namespace LethalCompanyMinimap.Component
                         showRadarBoosters = GUI.Toggle(new Rect(guiCenterX, guiYpos + 290, ITEMWIDTH, 30), showRadarBoosters, "Show Radar Boosters", toggleStyle);
                         showTerminalCodes = GUI.Toggle(new Rect(guiCenterX, guiYpos + 330, ITEMWIDTH, 30), showTerminalCodes, "Show Terminal Codes", toggleStyle);
                         showShipArrow = GUI.Toggle(new Rect(guiCenterX, guiYpos + 370, ITEMWIDTH, 30), showShipArrow, "Show Ship Arrow", toggleStyle);
-                        if (LeftClickButton(new Rect(guiCenterX, guiYpos + 430, ITEMWIDTH, 30), "Show all Icons"))
+                        showCompass = GUI.Toggle(new Rect(guiCenterX, guiYpos + 410, ITEMWIDTH, 30), showCompass, "Show Compass", toggleStyle);
+                        showHeadCam = GUI.Toggle(new Rect(guiCenterX, guiYpos + 450, ITEMWIDTH, 30), showHeadCam, "Show Head Camera", toggleStyle);
+                        if (LeftClickButton(new Rect(guiCenterX, guiYpos + 510, ITEMWIDTH, 30), "Show all Icons"))
                         {
                             showLoots = true;
                             showEnemies = true;
@@ -375,8 +379,10 @@ namespace LethalCompanyMinimap.Component
                             showRadarBoosters = true;
                             showTerminalCodes = true;
                             showShipArrow = true;
+                            showCompass = true;
+                            showHeadCam = true;
                         }
-                        if (LeftClickButton(new Rect(guiCenterX, guiYpos + 470, ITEMWIDTH, 30), "Hide all Icons"))
+                        if (LeftClickButton(new Rect(guiCenterX, guiYpos + 550, ITEMWIDTH, 30), "Hide all Icons"))
                         {
                             showLoots = false;
                             showEnemies = false;
@@ -386,6 +392,8 @@ namespace LethalCompanyMinimap.Component
                             showRadarBoosters = false;
                             showTerminalCodes = false;
                             showShipArrow = false;
+                            showCompass = false;
+                            showHeadCam = false;
                         }
                         break;
                     case 2:

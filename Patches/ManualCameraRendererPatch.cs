@@ -6,9 +6,8 @@
 using GameNetcodeStuff;
 using HarmonyLib;
 using System.Collections;
-using System.Reflection;
-using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace LethalCompanyMinimap.Patches
 {
@@ -20,8 +19,9 @@ namespace LethalCompanyMinimap.Patches
         [HarmonyPatch("Update")]
         [HarmonyPostfix]
         static void MapCameraAlwaysEnabledPatch(
-            ref Camera ___mapCamera, ref PlayerControllerB ___targetedPlayer, ref Light ___mapCameraLight,
-            ref Transform ___shipArrowPointer, GameObject ___shipArrowUI)
+            ref Camera ___mapCamera, ref PlayerControllerB ___targetedPlayer, //ref Light ___mapCameraLight,
+            ref Transform ___shipArrowPointer, GameObject ___shipArrowUI,
+            ref Image ___compassRose, ref bool ___enableHeadMountedCam)
         {
             if (___mapCamera != null)
             {
@@ -51,19 +51,23 @@ namespace LethalCompanyMinimap.Patches
                 // Rotate Terminal Code labels based on the map orientation
                 foreach (TerminalAccessibleObject terminalObject in Object.FindObjectsOfType<TerminalAccessibleObject>())
                 {
-                    FieldInfo mapRadarTextFieldInfo = terminalObject.GetType().GetField("mapRadarText", BindingFlags.NonPublic | BindingFlags.Instance);
-                    if (mapRadarTextFieldInfo != null)
-                    {
-                        TextMeshProUGUI mapRadarText = (TextMeshProUGUI)mapRadarTextFieldInfo.GetValue(terminalObject);
-                        mapRadarText.transform.eulerAngles = new Vector3(
-                            defaultEulerAngles.x,
-                            ___mapCamera.transform.eulerAngles.y,
-                            defaultEulerAngles.z
-                        );
-                    }
+                    terminalObject.mapRadarObject.transform.eulerAngles = new Vector3(
+                        defaultEulerAngles.x,
+                        ___mapCamera.transform.eulerAngles.y,
+                        defaultEulerAngles.z
+                    );
                 }
+
+                // Rotate Compass icon based on the map orientation
+                ___compassRose.rectTransform.localEulerAngles = new Vector3(
+                    0f,
+                    0f,
+                    ___mapCamera.transform.eulerAngles.y
+                );
             }
 
+            // Deprecated since update v70
+            /*
             if (___mapCameraLight != null && ___targetedPlayer != null)
             {
                 // Ensure the map spotlight is always enabled
@@ -75,6 +79,7 @@ namespace LethalCompanyMinimap.Patches
                     ___mapCameraLight.cullingMask = ~GameNetworkManager.Instance.localPlayerController.gameplayCamera.cullingMask;
                 }
             }
+            */
 
             if (___shipArrowPointer != null && ___shipArrowUI != null && ___targetedPlayer != null)
             {
@@ -93,6 +98,46 @@ namespace LethalCompanyMinimap.Patches
                 else
                 {
                     ___shipArrowUI.SetActive(value: false);
+                }
+            }
+
+            if (___compassRose != null)
+            {
+                // Toggle the compass icon based on the user's mod settings
+                if (!StartOfRound.Instance.inShipPhase)
+                {
+                    if (MinimapMod.minimapGUI.showCompass != ___compassRose.enabled)
+                    {
+                        ___compassRose.enabled = MinimapMod.minimapGUI.showCompass;
+                    }
+                }
+                else if (___compassRose.enabled == true)
+                {
+                    ___compassRose.enabled = false;
+                }
+            }
+
+            if (!StartOfRound.Instance.inShipPhase && MinimapMod.minimapGUI.showHeadCam != ___enableHeadMountedCam)
+            {
+                // Toggle the target player's head-mounted camera based on the user's mod settings
+                ___enableHeadMountedCam = MinimapMod.minimapGUI.showHeadCam;
+            }
+            else if (___enableHeadMountedCam == true)
+            {
+                ___enableHeadMountedCam = false;
+            }
+        }
+
+        [HarmonyPatch("LateUpdate")]
+        [HarmonyPostfix]
+        static void HideHeadCamPlaceholderPatch(ref Image ___localPlayerPlaceholder)
+        {
+            if (___localPlayerPlaceholder != null)
+            {
+                // Hide the head-mounted camera placeholder image if the user set it in the mod settings
+                if (MinimapMod.minimapGUI.showHeadCam == false && ___localPlayerPlaceholder.enabled == true)
+                {
+                    ___localPlayerPlaceholder.enabled = MinimapMod.minimapGUI.showHeadCam;
                 }
             }
         }

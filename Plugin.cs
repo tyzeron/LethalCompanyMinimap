@@ -51,6 +51,8 @@ namespace LethalCompanyMinimap
         private static ConfigEntry<bool> showRadarBoostersConfig;
         private static ConfigEntry<bool> showTerminalCodesConfig;
         private static ConfigEntry<bool> showShipArrowConfig;
+        private static ConfigEntry<bool> showCompassConfig;
+        private static ConfigEntry<bool> showHeadCamConfig;
         private static ConfigEntry<bool> freezePlayerIndexConfig;
 
         public static MinimapMod Instance;
@@ -118,6 +120,8 @@ namespace LethalCompanyMinimap
             showRadarBoostersConfig = Config.Bind("Minimap Icons", "Show Radar Boosters", true, "Toggles visibility of radar boosters (blue circles) on your Minimap");
             showTerminalCodesConfig = Config.Bind("Minimap Icons", "Show Terminal Codes", true, "Toggles visibility of terminal codes on your Minimap");
             showShipArrowConfig = Config.Bind("Minimap Icons", "Show Ship Arrow", true, "Toggles visibility of the arrow pointing to the Ship");
+            showCompassConfig = Config.Bind("Minimap Icons", "Show Compass", true, "Toggles visibility of the compass on on your Minimap");
+            showHeadCamConfig = Config.Bind("Minimap Icons", "Show Head Camera", true, "Toggles visibility of the head-mounted camera on your Minimap");
             freezePlayerIndexConfig = Config.Bind("Advance Settings", "Override Ship Controls", false, "Disables the ability to change the Minimap focus through the ship control panel, allowing Minimap focus changes only through the mod menu");
         }
 
@@ -142,6 +146,8 @@ namespace LethalCompanyMinimap
             minimapGUI.showRadarBoosters = showRadarBoostersConfig.Value;
             minimapGUI.showTerminalCodes = showTerminalCodesConfig.Value;
             minimapGUI.showShipArrow = showShipArrowConfig.Value;
+            minimapGUI.showCompass = showCompassConfig.Value;
+            minimapGUI.showHeadCam = showHeadCamConfig.Value;
             minimapGUI.freezePlayerIndex = freezePlayerIndexConfig.Value;
         }
 
@@ -166,6 +172,8 @@ namespace LethalCompanyMinimap
             showRadarBoostersConfig.Value = minimapGUI.showRadarBoosters;
             showTerminalCodesConfig.Value = minimapGUI.showTerminalCodes;
             showShipArrowConfig.Value = minimapGUI.showShipArrow;
+            showCompassConfig.Value = minimapGUI.showCompass;
+            showHeadCamConfig.Value = minimapGUI.showHeadCam;
             freezePlayerIndexConfig.Value = minimapGUI.freezePlayerIndex;
         }
     }
