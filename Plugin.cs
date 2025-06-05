@@ -26,7 +26,7 @@ namespace LethalCompanyMinimap
         public static MouseAndKeyboard defaultToggleMinimapKey = MouseAndKeyboard.F2;
         public static MouseAndKeyboard defaultToggleOverrideKey = MouseAndKeyboard.F3;
         public static MouseAndKeyboard defaultSwitchTargetKey = MouseAndKeyboard.F4;
-        public const int defaultMinimapSize = 200;
+        public const int defaultMinimapSize = 150;
         public const float defaultXoffset = 0f;
         public const float defaultYoffset = 0f;
         public const float defaultMapZoom = 19.7f;

@@ -15,6 +15,7 @@ namespace LethalCompanyMinimap.Patches
     internal class PlayerControllerBPatch
     {
         private const int padding = -5;
+        private const float aspectRatio = (4f / 3f); // Aspect ratio of the ship monitor (4:3)
         private static GameObject minimapObj;
         private static RawImage minimap;
         private static RectTransform tooltips;
@@ -42,7 +43,8 @@ namespace LethalCompanyMinimap.Patches
             }
 
             // Get the Minimap size from the settings
-            int size = MinimapMod.minimapGUI.minimapSize;
+            int height = MinimapMod.minimapGUI.minimapSize;
+            int width = (int)(height * aspectRatio);
 
             // Check if we have a Minimap yet
             if (minimap == null || minimapObj == null)
@@ -55,7 +57,7 @@ namespace LethalCompanyMinimap.Patches
                 minimap.rectTransform.anchorMin = new Vector2(1, 1);
                 minimap.rectTransform.anchorMax = new Vector2(1, 1);
                 minimap.rectTransform.pivot = new Vector2(1f, 1f);
-                minimap.rectTransform.sizeDelta = new Vector2(size, size);
+                minimap.rectTransform.sizeDelta = new Vector2(width, height);
                 minimap.rectTransform.anchoredPosition = new Vector2(
                     MinimapMod.minimapGUI.minimapXPos, MinimapMod.minimapGUI.minimapYPos + padding
                 );
@@ -89,7 +91,7 @@ namespace LethalCompanyMinimap.Patches
             {
                 tooltipsOriginalPos = tooltips.anchoredPosition;
             }
-            tooltips.anchoredPosition -= new Vector2(0, size);
+            tooltips.anchoredPosition -= new Vector2(0, height);
 
             // Request Minimap Version and sharing our own Minimap Version
             HUDManagerPatch.SendMinimapBroadcast("VersionReq");
@@ -125,9 +127,10 @@ namespace LethalCompanyMinimap.Patches
                 // Resize Minimap
                 if (MinimapMod.minimapGUI.minimapSize != minimap.rectTransform.sizeDelta.y)
                 {
-                    int size = MinimapMod.minimapGUI.minimapSize;
-                    minimap.rectTransform.sizeDelta = new Vector2(size, size);
-                    tooltips.anchoredPosition = tooltipsOriginalPos - new Vector2(0, size);
+                    int height = MinimapMod.minimapGUI.minimapSize;
+                    int width = (int)(height * aspectRatio);
+                    minimap.rectTransform.sizeDelta = new Vector2(width, height);
+                    tooltips.anchoredPosition = tooltipsOriginalPos - new Vector2(0, height);
                 }
                 // Move Minimap
                 if (MinimapMod.minimapGUI.minimapXPos != minimap.rectTransform.anchoredPosition.x

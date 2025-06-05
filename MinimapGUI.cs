@@ -340,7 +340,7 @@ namespace LethalCompanyMinimap.Component
 
                         if (LeftClickButton(new Rect(guiCenterX, guiYpos + 440, ITEMWIDTH, 30), "Reset to Default Size"))
                         {
-                            minimapSize = 200;
+                            minimapSize = 150;
                         }
                         if (LeftClickButton(new Rect(guiCenterX, guiYpos + 480, ITEMWIDTH, 30), "Reset to Default Position"))
                         {
