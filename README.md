@@ -46,6 +46,7 @@ mod installed.
     - You can toggle the Minimap via a configurable hotkey
 - Auto-rotate the Minimap based on where the player is looking at
     - You can turn this feature on and off via the mod menu
+    - Also auto-rotates certain Minimap icons (Terminal Code, Ship Arrow, Compass) accordingly
 - Customize all aspect of the Minimap:
     - the Minimap size
     - the Minimap position
@@ -63,8 +64,8 @@ mod installed.
 - All settings configurable via a user-friendly in-game GUI
 - All configurable settings saved across sessions
 - Toggle visibility of different Minimap icons
-    - Loots, Enemies, Alived Players, Dead Players, Terminal Codes, 
-Radar Boosters, and the Ship Arrow
+    - Loots, Enemies, Turrets, Alived Players, Dead Players, Terminal Codes, 
+Radar Boosters, Ship Arrow, Compass, and the Head Camera
 - Informs if the mod is outdated and a newer version is available
 
 ![Minimap GUI](Images/minimap-gui.png)
@@ -99,12 +100,13 @@ Your feedback for improving and optimizing the code is warmly welcomed.
 
 # Contact
 
-I am primarily active on Discord, but my **DMs are closed**. So the most 
-effective way to get in touch with me is via the 
-[Trilobite Tavern](https://discord.gg/trilobitetavern) Discord Server's 
-**support ticket** (or just ping me in the **General Chat**).
+I am primarily active on Discord, but my **DMs are closed**. The most effective 
+way to get in touch with me is via a Discord Server **support ticket**.
 
-I serve as a `System Administrator` on that server and am highly active there. 
-I have decided to take this approach as it allows me to keep my focus on mod 
-development, without the added responsibility of owning and maintaining 
-my own Discord server.
+To find the most up-to-date invite link to the Discord server, please visit my 
+**Twitter/X** profile: [@Tyzeron](https://x.com/tyzeron).
+
+I serve as a `System Administrator` on the Discord server and am highly active 
+there. I have decided to take this approach as it allows me to keep my focus on 
+mod development, without the added responsibility of owning and maintaining my 
+own Discord server.
